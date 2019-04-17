@@ -1,12 +1,25 @@
 # React Images
 
-[![react-images on npm](https://img.shields.io/npm/dm/react-images.svg)](https://www.npmjs.com/package/react-images)
-[![Join the chat at https://gitter.im/react-images/Lobby](https://badges.gitter.im/react-images/Lobby.svg)](https://gitter.im/react-images/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+## Local development
 
-A simple, responsive lightbox component for displaying an array of images.
+Clone this repository, run `yarn` to install all dependencies.
+Run `yarn link` to register this package system-wide ready to be linked.
+Run `yarn link "react-images"` in the CGT repository root directory.
+Run `yarn run watch` in this package's directory. Changes to the code will trigger the build package build which will build the files which will trigger CGT webpack rebuild.
 
 
-### Quick start
+## Updating package code
+
+To build the package code run:
+```
+yarn run build
+```
+This will build the package in the `./dist` directory.
+
+Commit and push.
+
+
+## Quick start
 
 
 ```bash
