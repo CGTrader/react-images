@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
+import { css, StyleSheet } from '../../../src/aphrodite-no-important';
 import Lightbox from 'react-images';
 
 class Gallery extends Component {
