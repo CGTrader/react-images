@@ -421,6 +421,7 @@ Lightbox.defaultProps = {
 	currentImage: 0,
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
+	inline: false,
 	leftArrowTitle: 'Previous (Left arrow key)',
 	onClickShowNextImage: true,
 	preloadNextImage: true,
