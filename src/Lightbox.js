@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { css, StyleSheet } from 'aphrodite';
+import { css, StyleSheet } from './aphrodite';
 import ScrollLock from 'react-scrolllock';
 
 import defaultTheme from './theme';
@@ -206,6 +206,19 @@ class Lightbox extends Component {
 			/>
 		);
 	}
+	renderInline () {
+		const { imageLoaded } = this.state;
+		return (
+			<div>
+				{imageLoaded && this.renderHeader()}
+				{this.renderImages()}
+				{imageLoaded && this.renderFooter()}
+				{imageLoaded && this.renderThumbnails()}
+				{imageLoaded && this.renderArrowPrev()}
+				{imageLoaded && this.renderArrowNext()}
+			</div>
+		);
+	}
 	renderDialog () {
 		const {
 			backdropClosesModal,
@@ -357,6 +370,9 @@ class Lightbox extends Component {
 		);
 	}
 	render () {
+		if (this.props.inline) {
+			return this.renderInline();
+		}
 		return (
 			<Portal>
 				{this.renderDialog()}
@@ -380,6 +396,7 @@ Lightbox.propTypes = {
 			thumbnail: PropTypes.string,
 		})
 	).isRequired,
+	inline: PropTypes.bool,
 	isOpen: PropTypes.bool,
 	leftArrowTitle: PropTypes.string,
 	onClickImage: PropTypes.func,
@@ -404,6 +421,7 @@ Lightbox.defaultProps = {
 	currentImage: 0,
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
+	inline: false,
 	leftArrowTitle: 'Previous (Left arrow key)',
 	onClickShowNextImage: true,
 	preloadNextImage: true,
