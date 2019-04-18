@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
+import { css, StyleSheet } from '../aphrodite-no-important';
 
 import Thumbnail from './Thumbnail';
 import Arrow from './Arrow';
