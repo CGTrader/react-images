@@ -14,7 +14,7 @@ class Video extends React.Component {
 	}
 
 	loadPlayer () {
-		require(['react-player'], (mod) => this.setState(() => ({ VideoComponent: mod.default })));
+		require(['react-player'], (mod) => this.setState({ VideoComponent: mod.default }));
 	}
 
 	makeVideoUrl () {
