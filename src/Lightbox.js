@@ -211,7 +211,7 @@ class Lightbox extends Component {
 	renderInline () {
 		const { imageLoaded } = this.state;
 		return (
-			<div>
+			<div className={this.props.className}>
 				{imageLoaded && this.renderHeader()}
 				{this.renderImages()}
 				{imageLoaded && this.renderFooter()}
@@ -421,6 +421,7 @@ class Lightbox extends Component {
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
+	className: PropTypes.string,
 	closeButtonTitle: PropTypes.string,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
