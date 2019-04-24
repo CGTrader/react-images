@@ -11,6 +11,7 @@ import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 import DefaultSpinner from './components/Spinner';
+import Video from './components/Video';
 
 import bindFunctions from './utils/bindFunctions';
 import canUseDom from './utils/canUseDom';
@@ -257,25 +258,53 @@ class Lightbox extends Component {
 			</Container>
 		);
 	}
-	renderImages () {
+	renderImage (image) {
 		const {
-			currentImage,
-			images,
 			onClickImage,
 			showThumbnails,
 		} = this.props;
 
 		const { imageLoaded } = this.state;
 
-		if (!images || !images.length) return null;
-
-		const image = images[currentImage];
 		const sourceSet = normalizeSourceSet(image);
 		const sizes = sourceSet ? '100vw' : null;
-
 		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
 		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
 			+ (this.theme.container.gutter.vertical)}px`;
+
+		return (
+			<img
+				className={css(this.classes.image, imageLoaded && this.classes.imageLoaded)}
+				onClick={onClickImage}
+				sizes={sizes}
+				alt={image.alt}
+				src={image.src}
+				srcSet={sourceSet}
+				style={{
+					cursor: onClickImage ? 'pointer' : 'auto',
+					maxHeight: `calc(100vh - ${heightOffset})`,
+				}}
+			/>
+		);
+	}
+	renderVideo (item) {
+		return (
+			<Video
+				{...item}
+				inline={this.props.inline}
+			/>
+		);
+	}
+	renderImages () {
+		const {
+			currentImage,
+			images,
+		} = this.props;
+
+		if (!images || !images.length) return null;
+
+		const item = images[currentImage];
+		const isVideo = ['youtube', 'vimeo'].includes(item.type);
 
 		return (
 			<figure className={css(this.classes.figure)}>
@@ -284,18 +313,11 @@ class Lightbox extends Component {
 					https://fb.me/react-unknown-prop is resolved
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
-				<img
-					className={css(this.classes.image, imageLoaded && this.classes.imageLoaded)}
-					onClick={onClickImage}
-					sizes={sizes}
-					alt={image.alt}
-					src={image.src}
-					srcSet={sourceSet}
-					style={{
-						cursor: onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
-					}}
-				/>
+				{
+					isVideo
+					? this.renderVideo(item)
+					: this.renderImage(item)
+				}
 			</figure>
 		);
 	}
@@ -394,6 +416,7 @@ Lightbox.propTypes = {
 			srcSet: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
 			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 			thumbnail: PropTypes.string,
+			type: PropTypes.string,
 		})
 	).isRequired,
 	inline: PropTypes.bool,
