@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
+import { css, StyleSheet } from '../aphrodite-no-important';
 
 const Spinner = props => {
 	const classes = StyleSheet.create(styles(props));
