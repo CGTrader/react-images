@@ -4,9 +4,10 @@ import { css, StyleSheet } from '../aphrodite-no-important';
 
 import defaults from '../theme';
 import deepMerge from '../utils/deepMerge';
+import marmosetThumb from '../assets/marmoset.png';
 
-function Thumbnail ({ index, src, thumbnail, active, onClick }, { theme }) {
-	const url = thumbnail ? thumbnail : src;
+function Thumbnail ({ index, src, thumbnail, active, onClick, type }, { theme }) {
+	const url = type === 'marmoset' ? marmosetThumb : thumbnail ? thumbnail : src;
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	return (

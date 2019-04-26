@@ -11,6 +11,8 @@ import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 import DefaultSpinner from './components/Spinner';
+import Video from './components/Video';
+import Marmoset from './components/Marmoset';
 
 import bindFunctions from './utils/bindFunctions';
 import canUseDom from './utils/canUseDom';
@@ -112,7 +114,7 @@ class Lightbox extends Component {
 		return this.preloadImageData(this.props.images[idx], onload);
 	}
 	preloadImageData (data, onload) {
-		if (!data) return;
+		if (!data || data.type === 'marmoset') return;
 		const img = new Image();
 		const sourceSet = normalizeSourceSet(data);
 
@@ -257,25 +259,72 @@ class Lightbox extends Component {
 			</Container>
 		);
 	}
-	renderImages () {
+	renderImage (image) {
 		const {
-			currentImage,
-			images,
 			onClickImage,
 			showThumbnails,
 		} = this.props;
 
 		const { imageLoaded } = this.state;
 
-		if (!images || !images.length) return null;
-
-		const image = images[currentImage];
 		const sourceSet = normalizeSourceSet(image);
 		const sizes = sourceSet ? '100vw' : null;
-
 		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
 		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
 			+ (this.theme.container.gutter.vertical)}px`;
+
+		return (
+			<img
+				className={css(this.classes.image, imageLoaded && this.classes.imageLoaded)}
+				onClick={onClickImage}
+				sizes={sizes}
+				alt={image.alt}
+				src={image.src}
+				srcSet={sourceSet}
+				style={{
+					cursor: onClickImage ? 'pointer' : 'auto',
+					maxHeight: `calc(100vh - ${heightOffset})`,
+				}}
+			/>
+		);
+	}
+	renderVideo (item) {
+		return (
+			<Video
+				{...item}
+				inline={this.props.inline}
+			/>
+		);
+	}
+	renderMarmoset (item) {
+		return (
+			<Marmoset
+				{...item}
+			/>
+		);
+	}
+	renderImages () {
+		const {
+			currentImage,
+			images,
+		} = this.props;
+
+		if (!images || !images.length) return null;
+
+		const item = images[currentImage];
+
+		let content;
+		switch (item.type) {
+			case 'youtube':
+			case 'vimeo':
+				content = this.renderVideo(item);
+				break;
+			case 'marmoset':
+				content = this.renderMarmoset(item);
+				break;
+			default:
+				content = this.renderImage(item);
+		}
 
 		return (
 			<figure className={css(this.classes.figure)}>
@@ -284,18 +333,7 @@ class Lightbox extends Component {
 					https://fb.me/react-unknown-prop is resolved
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
-				<img
-					className={css(this.classes.image, imageLoaded && this.classes.imageLoaded)}
-					onClick={onClickImage}
-					sizes={sizes}
-					alt={image.alt}
-					src={image.src}
-					srcSet={sourceSet}
-					style={{
-						cursor: onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
-					}}
-				/>
+				{content}
 			</figure>
 		);
 	}
@@ -394,6 +432,7 @@ Lightbox.propTypes = {
 			srcSet: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
 			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 			thumbnail: PropTypes.string,
+			type: PropTypes.string,
 		})
 	).isRequired,
 	inline: PropTypes.bool,
