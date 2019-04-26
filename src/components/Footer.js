@@ -66,7 +66,6 @@ const defaultStyles = {
 	footerCount: {
 		color: defaults.footer.count.color,
 		fontSize: defaults.footer.count.fontSize,
-		paddingLeft: '1em', // add a small gutter for the caption
 	},
 	footerCaption: {
 		flex: '1 1 0',

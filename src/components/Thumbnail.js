@@ -2,11 +2,28 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { css, StyleSheet } from '../aphrodite-no-important';
 
-import defaults from '../theme';
 import deepMerge from '../utils/deepMerge';
 import marmosetThumb from '../assets/marmoset.png';
 
 function Thumbnail ({ index, src, thumbnail, active, onClick, type }, { theme }) {
+	const defaultStyles = {
+		thumbnail: {
+			backgroundPosition: 'center',
+			backgroundSize: 'cover',
+			borderRadius: 2,
+			boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)',
+			cursor: 'pointer',
+			display: 'inline-block',
+			height: theme.thumbnail.size,
+			margin: theme.thumbnail.gutter,
+			overflow: 'hidden',
+			width: theme.thumbnail.size,
+		},
+		thumbnail__active: {
+			boxShadow: `inset 0 0 0 2px ${theme.thumbnail.activeBorderColor}`,
+		},
+	};
+
 	const url = type === 'marmoset' ? marmosetThumb : thumbnail ? thumbnail : src;
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
@@ -33,24 +50,6 @@ Thumbnail.propTypes = {
 
 Thumbnail.contextTypes = {
 	theme: PropTypes.object.isRequired,
-};
-
-const defaultStyles = {
-	thumbnail: {
-		backgroundPosition: 'center',
-		backgroundSize: 'cover',
-		borderRadius: 2,
-		boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)',
-		cursor: 'pointer',
-		display: 'inline-block',
-		height: defaults.thumbnail.size,
-		margin: defaults.thumbnail.gutter,
-		overflow: 'hidden',
-		width: defaults.thumbnail.size,
-	},
-	thumbnail__active: {
-		boxShadow: `inset 0 0 0 2px ${defaults.thumbnail.activeBorderColor}`,
-	},
 };
 
 export default Thumbnail;

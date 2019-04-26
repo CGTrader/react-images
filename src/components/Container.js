@@ -9,8 +9,9 @@ function Container ({ ...props }, { theme }) {
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	return (
-		<div id="lightboxBackdrop"
-			className={css(classes.container)}
+		<div
+			id="lightboxBackdrop"
+			className={`react-images react-images__modal ${css(classes.container)}`}
 			{...props}
 		/>
 	);

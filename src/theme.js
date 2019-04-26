@@ -4,12 +4,21 @@
 
 const theme = {};
 
+// inline container
+theme.inline = {
+	height: '100%',
+	width: '100%',
+	display: 'flex',
+	flexDirection: 'column',
+	lineHeight: '1',
+};
+
 // container
 theme.container = {
 	background: 'rgba(0, 0, 0, 0.8)',
 	gutter: {
-		horizontal: 10,
-		vertical: 10,
+		horizontal: 0,
+		vertical: 0,
 	},
 	zIndex: 2001,
 };
@@ -38,6 +47,7 @@ theme.footer = {
 
 // thumbnails
 theme.thumbnail = {
+	sidePadding: 40,
 	activeBorderColor: 'white',
 	size: 50,
 	gutter: 2,
