@@ -12,6 +12,7 @@ import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 import DefaultSpinner from './components/Spinner';
 import Video from './components/Video';
+import Marmoset from './components/Marmoset';
 
 import bindFunctions from './utils/bindFunctions';
 import canUseDom from './utils/canUseDom';
@@ -113,7 +114,7 @@ class Lightbox extends Component {
 		return this.preloadImageData(this.props.images[idx], onload);
 	}
 	preloadImageData (data, onload) {
-		if (!data) return;
+		if (!data || data.type === 'marmoset') return;
 		const img = new Image();
 		const sourceSet = normalizeSourceSet(data);
 
@@ -295,6 +296,13 @@ class Lightbox extends Component {
 			/>
 		);
 	}
+	renderMarmoset (item) {
+		return (
+			<Marmoset
+				{...item}
+			/>
+		);
+	}
 	renderImages () {
 		const {
 			currentImage,
@@ -304,7 +312,19 @@ class Lightbox extends Component {
 		if (!images || !images.length) return null;
 
 		const item = images[currentImage];
-		const isVideo = ['youtube', 'vimeo'].includes(item.type);
+
+		let content;
+		switch (item.type) {
+			case 'youtube':
+			case 'vimeo':
+				content = this.renderVideo(item);
+				break;
+			case 'marmoset':
+				content = this.renderMarmoset(item);
+				break;
+			default:
+				content = this.renderImage(item);
+		}
 
 		return (
 			<figure className={css(this.classes.figure)}>
@@ -313,11 +333,7 @@ class Lightbox extends Component {
 					https://fb.me/react-unknown-prop is resolved
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
-				{
-					isVideo
-					? this.renderVideo(item)
-					: this.renderImage(item)
-				}
+				{content}
 			</figure>
 		);
 	}
