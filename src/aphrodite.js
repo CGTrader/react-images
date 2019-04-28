@@ -1,11 +1,20 @@
-import { StyleSheet as _StyleSheet, css as _css } from 'aphrodite';
-import canUseDom from './utils/canUseDom';
-
-export function css (...args) {
-	return !canUseDom ? '' : _css.apply(this, args);
-};
 export var StyleSheet = {
-	create: function create (...args) {
-		return !canUseDom ? {} : _StyleSheet.create.apply(this, args);
+	create: function create (sheetDefinition) {
+		const mappedSheetDefinition = {};
+		const keys = Object.keys(sheetDefinition);
+
+		for (let i = 0; i < keys.length; i += 1) {
+			const key = keys[i];
+			const val = sheetDefinition[key];
+			const stringVal = JSON.stringify(val);
+
+			mappedSheetDefinition[key] = {
+				_len: stringVal.length,
+				_name: key,
+				_definition: val,
+			};
+		}
+
+		return mappedSheetDefinition;
 	},
 };

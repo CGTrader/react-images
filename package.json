@@ -51,7 +51,8 @@
     "react-dom": "^15.0 || ^16.0"
   },
   "scripts": {
-    "build": "webpack --config webpack.build.config.js",
+    "build": "webpack --config webpack.build.config.js --mode production",
+    "watch": "webpack --config webpack.build.config.js --mode development --watch",
     "start": "webpack-dev-server --progress",
     "lint": "eslint src/** examples/src/app.js examples/src/components/Gallery.js"
   },

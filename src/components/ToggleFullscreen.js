@@ -1,5 +1,5 @@
 import React from 'react';
-import { css, StyleSheet } from '../aphrodite-no-important';
+import { css, StyleSheet } from '../aphrodite';
 import Icon from './Icon';
 
 const defaultStyles = {
@@ -17,7 +17,7 @@ const ToggleFullscreen = ({ onClick }) => {
 	const classes = StyleSheet.create(defaultStyles);
 	return (
 		<div
-			className={css(classes.icon)}
+			style={{ ...classes.icon._definition }}
 			onClick={onClick}
 		>
 			<Icon type="fullScreen" />

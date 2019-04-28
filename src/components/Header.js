@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from '../aphrodite-no-important';
+import { css, StyleSheet } from '../aphrodite';
 
 import defaults from '../theme';
 import deepMerge from '../utils/deepMerge';
@@ -18,12 +18,16 @@ function Header ({
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	return (
-		<div className={css(classes.header)} {...props}>
+		<div
+			style={{ ...classes.header._definition }}
+			{...props}
+		>
 			{customControls ? customControls : <span />}
 			{!!showCloseButton && (
 				<button
 					title={closeButtonTitle}
-					className={css(classes.close)}
+					style={{ ...classes.close._definition }}
+					className="close"
 					onClick={onClose}
 				>
 					<Icon fill={!!theme.close && theme.close.fill || defaults.close.fill} type="close" />

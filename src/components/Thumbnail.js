@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from '../aphrodite-no-important';
+import { css, StyleSheet } from '../aphrodite';
 
 import deepMerge from '../utils/deepMerge';
 import marmosetThumb from '../assets/marmoset.png';
@@ -29,13 +29,17 @@ function Thumbnail ({ index, src, thumbnail, active, onClick, type }, { theme })
 
 	return (
 		<div
-			className={css(classes.thumbnail, active && classes.thumbnail__active)}
+			className={`thumbnail ${active ? 'thumbnail-active' : ''}`}
+			style={{
+				...classes.thumbnail._definition,
+				...(active ? classes.thumbnail__active._definition : {}),
+				backgroundImage: 'url("' + url + '")',
+			}}
 			onClick={(e) => {
 				e.preventDefault();
 				e.stopPropagation();
 				onClick(index);
 			}}
-			style={{ backgroundImage: 'url("' + url + '")' }}
 		/>
 	);
 }

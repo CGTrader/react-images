@@ -7,7 +7,7 @@ import theme from '../theme';
 
 function Thumbnails ({ currentImage, images, onClickThumbnail }) {
 	return (
-		<div className={css(classes.thumbnails)}>
+		<div style={{ ...classes.thumbnails._definition }}>
 			{images.map((img, idx) => (
 				<Thumbnail
 					{...img}

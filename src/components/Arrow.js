@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from '../aphrodite-no-important';
+import { css, StyleSheet } from '../aphrodite';
 
 import defaults from '../theme';
 import deepMerge from '../utils/deepMerge';
@@ -21,10 +21,16 @@ function Arrow ({
 	return (
 		<button
 			type="button"
-			className={css(classes.arrow, classes['arrow__direction__' + direction], size && classes['arrow__size__' + size])}
+			className={`arrow ${size}`}
 			onClick={onClick}
 			onTouchEnd={onClick}
 			{...props}
+			style={{
+				...classes.arrow._definition,
+				...classes['arrow__direction__' + direction]._definition,
+				...classes['arrow__size__' + size]._definition,
+				...props.style,
+			}}
 		>
 			<Icon fill={!!theme.arrow && theme.arrow.fill || defaults.arrow.fill} type={icon} />
 		</button>
@@ -51,7 +57,7 @@ const defaultStyles = {
 		borderRadius: 4,
 		cursor: 'pointer',
 		outline: 'none',
-		padding: 10, // increase hit area
+		padding: 0,
 		position: 'absolute',
 		top: `calc(50% - ${defaults.thumbnail.size + defaults.thumbnail.gutter * 2}px)`,
 
@@ -65,8 +71,7 @@ const defaultStyles = {
 		height: defaults.arrow.height,
 		marginTop: defaults.thumbnail.size / -2,
 		width: 40,
-
-		'@media (min-width: 768px)': {
+		'@media (minWidth: 768px)': {
 			width: 70,
 		},
 	},
@@ -74,8 +79,8 @@ const defaultStyles = {
 		height: defaults.thumbnail.size,
 		marginTop: defaults.thumbnail.size / -2,
 		width: 30,
-
-		'@media (min-width: 500px)': {
+		padding: 5,
+		'@media (minWidth: 500px)': {
 			width: 40,
 		},
 	},

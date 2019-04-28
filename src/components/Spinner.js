@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from '../aphrodite-no-important';
+import { css, StyleSheet } from '../aphrodite';
 
 const Spinner = props => {
 	const classes = StyleSheet.create(styles(props));
 
 	return (
-		<div className={css(classes.spinner)}>
-			<div className={css(classes.ripple)} />
+		<div style={{ ...classes.spinner._definition }}>
+			<div style={{ ...classes.ripple._definition }} />
 		</div>
 	);
 };

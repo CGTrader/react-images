@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from '../aphrodite-no-important';
+import { css, StyleSheet } from '../aphrodite';
 import defaults from '../theme';
 import deepMerge from '../utils/deepMerge';
 
@@ -19,7 +19,10 @@ function Footer ({
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	const imageCount = showCount ? (
-		<div className={css(classes.footerCount)}>
+		<div
+			className="footerCount"
+			style={{ ...classes.footerCount._definition }}
+		>
 			{countCurrent}
 			{countSeparator}
 			{countTotal}
@@ -27,9 +30,13 @@ function Footer ({
 		: <span />;
 
 	return (
-		<div className={css(classes.footer)} {...props}>
+		<div
+			className="footer"
+			style={{ ...classes.footer._definition }}
+			{...props}
+		>
 			{caption ? (
-				<figcaption className={css(classes.footerCaption)}>
+				<figcaption style={{ ...classes.footerCaption._definition }}>
 					{caption}
 				</figcaption>
 			) : <span />}

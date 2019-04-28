@@ -1,7 +1,6 @@
 const path = require('path');
 
 module.exports = {
-	mode: 'production',
 	entry: './src/Lightbox.js',
 	output: {
 		path: path.resolve(__dirname, './lib'),

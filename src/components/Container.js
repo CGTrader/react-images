@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from '../aphrodite-no-important';
+import { css, StyleSheet } from '../aphrodite';
 
 import defaults from '../theme';
 import deepMerge from '../utils/deepMerge';
@@ -11,7 +11,8 @@ function Container ({ ...props }, { theme }) {
 	return (
 		<div
 			id="lightboxBackdrop"
-			className={`react-images react-images__modal ${css(classes.container)}`}
+			className="react-images react-images__modal"
+			style={{ ...classes.container._definition }}
 			{...props}
 		/>
 	);

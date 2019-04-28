@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { css, StyleSheet } from '../aphrodite-no-important';
+import { css, StyleSheet } from '../aphrodite';
 
 import Thumbnail from './Thumbnail';
 import Arrow from './Arrow';
@@ -31,8 +31,7 @@ export default class PaginatedThumbnails extends Component {
 		});
 
 		this.arrowStyles = {
-			height: theme.thumbnail.size + (theme.thumbnail.gutter * 2),
-			width: 40,
+			height: theme.thumbnail.size,
 			top: 0,
 			margin: 0,
 		};
@@ -103,7 +102,10 @@ export default class PaginatedThumbnails extends Component {
 		const thumbnails = images.slice(offset, offset + perPage);
 
 		return (
-			<div ref={node => (this.container = node)} className={css(this.classes.paginatedThumbnails)}>
+			<div
+				ref={node => (this.container = node)}
+				style={{ ...this.classes.paginatedThumbnails._definition }}
+			>
 				{this.renderArrowPrev()}
 				{thumbnails.map((img, idx) => (
 					<Thumbnail key={offset + idx}

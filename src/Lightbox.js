@@ -215,8 +215,12 @@ class Lightbox extends Component {
 	}
 	renderInline () {
 		const { imageLoaded } = this.state;
+		console.log(this.classes.inline);
 		return (
-			<div className={`react-images react-images__inline ${css(this.classes.inline)}`}>
+			<div
+				className="react-images react-images__inline"
+				style={this.classes.inline._definition}
+			>
 				{this.renderImages()}
 				{this.renderFooter()}
 				{this.renderThumbnails()}
@@ -249,8 +253,12 @@ class Lightbox extends Component {
 				onClick={backdropClosesModal && this.closeBackdrop}
 				onTouchEnd={backdropClosesModal && this.closeBackdrop}
 			>
-				<div className={css(this.classes.modalContainer)}>
-					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
+				<div
+					style={this.classes.modalContainer._definition}
+				>
+					<div
+						style={{ ...this.classes.content._definition, marginBottom: offsetThumbnails, maxWidth: width }}
+					>
 						{imageLoaded && this.renderHeader()}
 						{this.renderImages()}
 						{this.renderSpinner()}
@@ -276,15 +284,16 @@ class Lightbox extends Component {
 
 		return (
 			<img
-				className={css(this.classes.image, imageLoaded && this.classes.imageLoaded)}
+				style={{
+					...this.classes.image._definition,
+					...(imageLoaded ? this.classes.imageLoaded._definition : {}),
+					cursor: onClickImage ? 'pointer' : 'auto',
+				}}
 				onClick={onClickImage}
 				sizes={sizes}
 				alt={image.alt}
 				src={image.src}
 				srcSet={sourceSet}
-				style={{
-					cursor: onClickImage ? 'pointer' : 'auto',
-				}}
 			/>
 		);
 	}
@@ -329,7 +338,12 @@ class Lightbox extends Component {
 		}
 
 		return (
-			<figure className={css(this.classes.figure, inline && this.classes.inlineFigure)}>
+			<figure
+				style={{
+					...this.classes.figure._definition,
+					...(inline ? this.classes.inlineFigure._definition : {}),
+				}}
+			>
 				{/*
 					Re-implement when react warning "unknown props"
 					https://fb.me/react-unknown-prop is resolved
@@ -411,7 +425,12 @@ class Lightbox extends Component {
 		const Spinner = spinner;
 
 		return (
-			<div className={css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive)}>
+			<div
+				style={{
+					...this.classes.spinner._definition,
+					...(!imageLoaded ? this.classes.spinnerActive._definition : {}),
+				}}
+			>
 				<Spinner
 					color={spinnerColor}
 					size={spinnerSize}
