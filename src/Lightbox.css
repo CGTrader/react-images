@@ -54,8 +54,9 @@
   -webkit-touch-callout: none;
   user-select: none;
 
-  opacity: 0;
-  transition: opacity 0.3s;
+  /* not needed since we have ssr */
+  /* opacity: 0; */
+  /* transition: opacity 0.3s; */
 }
 
 .imageLoaded {
