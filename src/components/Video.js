@@ -37,32 +37,43 @@ class Video extends React.Component {
 		const { inline } = this.props;
 		const url = this.makeVideoUrl();
 
-		const Component = this.state.VideoComponent || 'div';
+		const Component = this.state.VideoComponent;
 
-		let componentProps = {
+		const commonProps = {
 			style: {
 				position: 'absolute',
-				width: inline ? '100%' : '80vw',
-				height: inline ? '100%' : '60vh',
-				transform: inline ? '' : 'translate(-50%, -50%)',
+				width: '100%',
+				height: inline ? '100%' : '80%',
 				background: '#000',
 			},
 		};
 
-		if (this.state.VideoComponent && url) {
-			componentProps = {
-				...componentProps,
-				url,
-				playing: false,
-				width: inline ? '100%' : '0',
-				height: inline ? '100%' : '0',
-			};
-		}
-
 		return (
-			<Component
-				{...componentProps}
-			/>
+			<div {...commonProps}>
+				{
+					Component
+					&& (
+						<Component
+							config={{
+								youtube: {
+									playerVars: {
+										disablekb: true,
+									},
+								},
+							}}
+							style={{
+								position: 'absolute',
+								width: '100%',
+								height: '100%',
+							}}
+							url={url}
+							playing={false}
+							width="100%"
+							height="100%"
+						/>
+					)
+				}
+			</div>
 		);
 	}
 }

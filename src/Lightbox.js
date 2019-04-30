@@ -13,6 +13,7 @@ import Portal from './components/Portal';
 import DefaultSpinner from './components/Spinner';
 import Video from './components/Video';
 import Marmoset from './components/Marmoset';
+import ToggleFullscreen from './components/ToggleFullscreen';
 
 import bindFunctions from './utils/bindFunctions';
 import canUseDom from './utils/canUseDom';
@@ -43,6 +44,7 @@ class Lightbox extends Component {
 			'closeBackdrop',
 			'handleKeyboardInput',
 			'handleImageLoaded',
+			'handleToggleFullscreenClick',
 		]);
 	}
 	getChildContext () {
@@ -177,6 +179,9 @@ class Lightbox extends Component {
 	handleImageLoaded () {
 		this.setState({ imageLoaded: true });
 	}
+	handleToggleFullscreenClick () {
+		this.props.onToggleFullscreenClick();
+	}
 
 	// ==============================
 	// RENDERERS
@@ -211,13 +216,13 @@ class Lightbox extends Component {
 	renderInline () {
 		const { imageLoaded } = this.state;
 		return (
-			<div>
-				{imageLoaded && this.renderHeader()}
+			<div className={`react-images react-images__inline ${css(this.classes.inline)}`}>
 				{this.renderImages()}
-				{imageLoaded && this.renderFooter()}
-				{imageLoaded && this.renderThumbnails()}
+				{this.renderFooter()}
+				{this.renderThumbnails()}
 				{imageLoaded && this.renderArrowPrev()}
 				{imageLoaded && this.renderArrowNext()}
+				<ToggleFullscreen onClick={this.handleToggleFullscreenClick} />
 			</div>
 		);
 	}
@@ -244,14 +249,14 @@ class Lightbox extends Component {
 				onClick={backdropClosesModal && this.closeBackdrop}
 				onTouchEnd={backdropClosesModal && this.closeBackdrop}
 			>
-				<div>
+				<div className={css(this.classes.modalContainer)}>
 					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
 						{imageLoaded && this.renderHeader()}
 						{this.renderImages()}
 						{this.renderSpinner()}
 						{imageLoaded && this.renderFooter()}
 					</div>
-					{imageLoaded && this.renderThumbnails()}
+					{this.renderThumbnails()}
 					{imageLoaded && this.renderArrowPrev()}
 					{imageLoaded && this.renderArrowNext()}
 					{this.props.preventScroll && <ScrollLock />}
@@ -262,16 +267,12 @@ class Lightbox extends Component {
 	renderImage (image) {
 		const {
 			onClickImage,
-			showThumbnails,
 		} = this.props;
 
 		const { imageLoaded } = this.state;
 
 		const sourceSet = normalizeSourceSet(image);
 		const sizes = sourceSet ? '100vw' : null;
-		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
-		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
-			+ (this.theme.container.gutter.vertical)}px`;
 
 		return (
 			<img
@@ -283,7 +284,6 @@ class Lightbox extends Component {
 				srcSet={sourceSet}
 				style={{
 					cursor: onClickImage ? 'pointer' : 'auto',
-					maxHeight: `calc(100vh - ${heightOffset})`,
 				}}
 			/>
 		);
@@ -300,6 +300,7 @@ class Lightbox extends Component {
 		return (
 			<Marmoset
 				{...item}
+				inline={this.props.inline}
 			/>
 		);
 	}
@@ -307,6 +308,7 @@ class Lightbox extends Component {
 		const {
 			currentImage,
 			images,
+			inline,
 		} = this.props;
 
 		if (!images || !images.length) return null;
@@ -327,7 +329,7 @@ class Lightbox extends Component {
 		}
 
 		return (
-			<figure className={css(this.classes.figure)}>
+			<figure className={css(this.classes.figure, inline && this.classes.inlineFigure)}>
 				{/*
 					Re-implement when react warning "unknown props"
 					https://fb.me/react-unknown-prop is resolved
@@ -338,7 +340,14 @@ class Lightbox extends Component {
 		);
 	}
 	renderThumbnails () {
-		const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
+		const {
+			images,
+			currentImage,
+			onClickThumbnail,
+			showThumbnails,
+			thumbnailOffset,
+			inline,
+		} = this.props;
 
 		if (!showThumbnails) return;
 
@@ -348,6 +357,9 @@ class Lightbox extends Component {
 				images={images}
 				offset={thumbnailOffset}
 				onClickThumbnail={onClickThumbnail}
+				onClickNext={this.props.onClickNext}
+				onClickPrev={this.props.onClickPrev}
+				inline={inline}
 			/>
 		);
 	}
@@ -421,6 +433,7 @@ class Lightbox extends Component {
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
+	className: PropTypes.string,
 	closeButtonTitle: PropTypes.string,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
@@ -480,17 +493,37 @@ Lightbox.childContextTypes = {
 };
 
 const defaultStyles = {
+	modalContainer: {
+		width: '100%',
+		height: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'flex-end',
+	},
 	content: {
 		position: 'relative',
+		margin: 'auto',
+		width: '100%',
+		height: '100%',
 	},
 	figure: {
-		margin: 0, // remove browser default
+		position: 'relative',
+		flex: '1 0',
+		margin: 0,
+		width: '100%',
+		height: '100%',
+		display: 'flex',
+		alignItems: 'center',
+	},
+	inlineFigure: {
+		height: 0, // flex hacks
+		background: '#fff',
 	},
 	image: {
-		display: 'block', // removes browser default gutter
-		height: 'auto',
-		margin: '0 auto', // maintain center on very short screens OR very narrow image
+		display: 'block',
+		margin: 'auto',
 		maxWidth: '100%',
+		maxHeight: '100%',
 
 		// disable user select
 		WebkitTouchCallout: 'none',

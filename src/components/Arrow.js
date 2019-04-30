@@ -53,7 +53,7 @@ const defaultStyles = {
 		outline: 'none',
 		padding: 10, // increase hit area
 		position: 'absolute',
-		top: '50%',
+		top: `calc(50% - ${defaults.thumbnail.size + defaults.thumbnail.gutter * 2}px)`,
 
 		// disable user select
 		WebkitTouchCallout: 'none',
@@ -63,7 +63,7 @@ const defaultStyles = {
 	// sizes
 	arrow__size__medium: {
 		height: defaults.arrow.height,
-		marginTop: defaults.arrow.height / -2,
+		marginTop: defaults.thumbnail.size / -2,
 		width: 40,
 
 		'@media (min-width: 768px)': {

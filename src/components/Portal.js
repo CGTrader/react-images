@@ -28,7 +28,7 @@ export default class Portal extends Component {
 
 		render(
 			<PassContext context={this.context}>
-				<div>
+				<div style={{ width: '100%', height: '100%' }}>
 					<style>{styles}</style>
 					<TransitionGroup {...this.props}>
 						<CSSTransition timeout={{ enter: duration, exit: duration }} classNames="fade">
