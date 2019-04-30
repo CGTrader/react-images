@@ -8,14 +8,14 @@ Run `yarn link` to register this package system-wide ready to be linked.
 
 Run `yarn link "react-images"` in the CGT repository root directory.
 
-Create a feature branch. Code changes will automatically be picked up by the CGT webpack.
+Run `yarn run watch`.
 
-Run `yarn run start` to launch the local wepback dev server.
+Create a feature branch. Code changes will automatically be picked up by the CGT webpack.
 
 
 ## Updating package code
 
-Merge feature branch into master and push master to remote.
+Merge feature branch into master, run `yarn run build` and push master to remote.
 
 
 ## Quick start
