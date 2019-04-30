@@ -216,7 +216,7 @@ class Lightbox extends Component {
 	renderInline () {
 		return (
 			<div
-				className={`a react-images react-images__inline ${styles.inline}`}
+				className={`react-images react-images__inline ${styles.inline}`}
 			>
 				{this.renderImages()}
 				{this.renderFooter()}
