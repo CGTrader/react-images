@@ -1,4 +1,5 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
 	entry: './src/Lightbox.js',
@@ -32,11 +33,7 @@ module.exports = {
 				test: /\.css$/,
 				use: [
 					{
-						loader: 'style-loader',
-						options: {
-							// singleton: true,
-							transform: 'conditional.css.js',
-						},
+						loader: MiniCssExtractPlugin.loader,
 					},
 					{
 						loader: 'css-loader',
@@ -49,7 +46,11 @@ module.exports = {
 			},
 		],
 	},
-	plugins: [],
+	plugins: [
+		new MiniCssExtractPlugin({
+			filename: 'Lightbox.css',
+		}),
+	],
 	optimization: {
 		minimize: true,
 	},
