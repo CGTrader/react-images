@@ -221,7 +221,7 @@ class Lightbox extends Component {
 				{this.renderImages()}
 				{this.renderFooter()}
 				{this.renderThumbnails()}
-				<ToggleFullscreen onClick={this.handleToggleFullscreenClick} />
+				{this.props.showToggleFullscreen && <ToggleFullscreen onClick={this.handleToggleFullscreenClick} />}
 			</div>
 		);
 	}
@@ -473,6 +473,7 @@ Lightbox.propTypes = {
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
 	showThumbnails: PropTypes.bool,
+	showToggleFullscreen: PropTypes.bool,
 	spinner: PropTypes.func,
 	spinnerColor: PropTypes.string,
 	spinnerSize: PropTypes.number,
@@ -493,6 +494,7 @@ Lightbox.defaultProps = {
 	rightArrowTitle: 'Next (Right arrow key)',
 	showCloseButton: true,
 	showImageCount: true,
+	showToggleFullscreen: false,
 	spinner: DefaultSpinner,
 	spinnerColor: 'white',
 	spinnerSize: 100,
