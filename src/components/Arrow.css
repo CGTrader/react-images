@@ -1,0 +1,33 @@
+.arrow {
+  background: none;
+  border: none;
+  border-radius: 4;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  position: absolute;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+.arrow__size__medium {
+  width: 40px;
+}
+
+@media (min-width: 768px) {
+  .arrow__size__medium {
+    width: 70px;
+  }
+}
+
+.arrow__size__small {
+  width: 30px;
+  padding: 5px;
+}
+
+@media (minWidth: 500px) {
+  .arrow__size__small {
+    width: 40px;
+  }
+}
+

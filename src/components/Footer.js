@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from '../aphrodite';
-import defaults from '../theme';
-import deepMerge from '../utils/deepMerge';
+import PropTypes from 'prop-types';
+
+import styles from './Footer.css';
 
 function Footer ({
 	caption,
@@ -16,12 +15,13 @@ function Footer ({
 }) {
 	if (!caption && !showCount) return null;
 
-	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
-
 	const imageCount = showCount ? (
 		<div
 			className="footerCount"
-			style={{ ...classes.footerCount._definition }}
+			style={{
+				color: theme.footer.count.color,
+				fontSize: theme.footer.count.fontSize,
+			}}
 		>
 			{countCurrent}
 			{countSeparator}
@@ -32,11 +32,13 @@ function Footer ({
 	return (
 		<div
 			className="footer"
-			style={{ ...classes.footer._definition }}
+			style={{
+				color: theme.footer.color,
+			}}
 			{...props}
 		>
 			{caption ? (
-				<figcaption style={{ ...classes.footerCaption._definition }}>
+				<figcaption className={styles.footerCaption}>
 					{caption}
 				</figcaption>
 			) : <span />}
@@ -52,31 +54,9 @@ Footer.propTypes = {
 	countTotal: PropTypes.number,
 	showCount: PropTypes.bool,
 };
+
 Footer.contextTypes = {
 	theme: PropTypes.object.isRequired,
-};
-
-const defaultStyles = {
-	footer: {
-		boxSizing: 'border-box',
-		color: defaults.footer.color,
-		cursor: 'auto',
-		display: 'flex',
-		justifyContent: 'space-between',
-		left: 0,
-		lineHeight: 1.3,
-		paddingBottom: defaults.footer.gutter.vertical,
-		paddingLeft: defaults.footer.gutter.horizontal,
-		paddingRight: defaults.footer.gutter.horizontal,
-		paddingTop: defaults.footer.gutter.vertical,
-	},
-	footerCount: {
-		color: defaults.footer.count.color,
-		fontSize: defaults.footer.count.fontSize,
-	},
-	footerCaption: {
-		flex: '1 1 0',
-	},
 };
 
 export default Footer;

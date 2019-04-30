@@ -4,26 +4,20 @@
 
 const theme = {};
 
-// inline container
-theme.inline = {
-	height: '100%',
-	width: '100%',
-	display: 'flex',
-	flexDirection: 'column',
-	lineHeight: '1',
+theme.spinner = {
+	size: 100,
+	ripple: '#fff',
 };
 
-// container
 theme.container = {
 	background: 'rgba(0, 0, 0, 0.8)',
 	gutter: {
-		horizontal: 0,
+		horizontal: 5,
 		vertical: 0,
 	},
 	zIndex: 2001,
 };
 
-// header
 theme.header = {
 	height: 40,
 };
@@ -31,7 +25,6 @@ theme.close = {
 	fill: 'white',
 };
 
-// footer
 theme.footer = {
 	color: 'white',
 	count: {
@@ -45,7 +38,6 @@ theme.footer = {
 	},
 };
 
-// thumbnails
 theme.thumbnail = {
 	sidePadding: 40,
 	activeBorderColor: 'white',
@@ -53,7 +45,6 @@ theme.thumbnail = {
 	gutter: 2,
 };
 
-// arrow
 theme.arrow = {
 	background: 'none',
 	fill: 'white',

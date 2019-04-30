@@ -1,0 +1,9 @@
+.thumbnail {
+  background-position: center;
+  background-size: cover;
+  border-radius: 2;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+}
+

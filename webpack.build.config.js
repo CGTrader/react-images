@@ -28,6 +28,25 @@ module.exports = {
 				test: /\.(jpe?g|png|gif|svg)$/i,
 				loader: 'base64-inline-loader?name=[path][name].[ext]',
 			},
+			{
+				test: /\.css$/,
+				use: [
+					{
+						loader: 'style-loader',
+						options: {
+							// singleton: true,
+							transform: 'conditional.css.js',
+						},
+					},
+					{
+						loader: 'css-loader',
+						options: {
+							modules: true,
+							localIdentName: '[local]--[hash:base64:5]',
+						},
+					},
+				],
+			},
 		],
 	},
 	plugins: [],
