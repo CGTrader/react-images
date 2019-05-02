@@ -5,14 +5,16 @@ import styles from './Thumbnail.css';
 
 import marmosetThumb from '../assets/marmoset.png';
 
-function Thumbnail ({ index, src, thumbnail, active, onClick, type }, { theme }) {
+function Thumbnail ({ index, src, thumbnail, active, onClick, type, custom, customThumbnailContent }, { theme }) {
+	const customContent = custom && customThumbnailContent && customThumbnailContent({ type });
+
 	const url = type === 'marmoset' ? marmosetThumb : thumbnail ? thumbnail : src;
 
 	return (
 		<div
 			className={`thumbnail ${active ? 'thumbnail-active' : ''} ${styles.thumbnail}`}
 			style={{
-				backgroundImage: 'url("' + url + '")',
+				backgroundImage: customContent ? '' : 'url("' + url + '")',
 				height: theme.thumbnail.size,
 				margin: theme.thumbnail.gutter,
 				width: theme.thumbnail.size,
@@ -23,7 +25,9 @@ function Thumbnail ({ index, src, thumbnail, active, onClick, type }, { theme })
 				e.stopPropagation();
 				onClick(index);
 			}}
-		/>
+		>
+			{!!customContent && customContent}
+		</div>
 	);
 }
 
