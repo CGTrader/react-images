@@ -7,11 +7,6 @@ module.exports = {
 	entry: {
 		app: './app.js',
 	},
-	output: {
-		path: path.resolve(__dirname, 'examples/dist'),
-		filename: '[name].js',
-		publicPath: '/',
-	},
 	devServer: {
 		contentBase: path.resolve(__dirname, 'examples/src'),
 		host: '0.0.0.0',
@@ -33,8 +28,25 @@ module.exports = {
 					{
 						loader: MiniCssExtractPlugin.loader,
 					},
-					'css-loader',
+					{
+						loader: 'css-loader',
+					},
 					'less-loader',
+				],
+			},
+			{
+				test: /\.css$/,
+				use: [
+					{
+						loader: MiniCssExtractPlugin.loader,
+					},
+					{
+						loader: 'css-loader',
+						options: {
+							modules: true,
+							localIdentName: '[local]--[hash:base64:5]',
+						},
+					},
 				],
 			},
 			{
@@ -64,4 +76,9 @@ module.exports = {
 			filename: 'example.css',
 		}),
 	],
+	stats: {
+		assets: false,
+		children: false,
+		context: path.resolve(__dirname),
+	},
 };
