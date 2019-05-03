@@ -6,7 +6,7 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, './lib'),
 		// publicPath: '/app/assets/',
-		publicPath: '',
+		// publicPath: '',
 		filename: 'Lightbox.js',
 		chunkFilename: 'Lightbox.chunk.js',
 		library: 'Lightbox',
