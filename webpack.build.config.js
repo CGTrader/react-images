@@ -5,25 +5,29 @@ module.exports = {
 	entry: './src/Lightbox.js',
 	output: {
 		path: path.resolve(__dirname, './lib'),
-		publicPath: '/',
+		// publicPath: '/app/assets/',
+		publicPath: '',
 		filename: 'Lightbox.js',
+		chunkFilename: 'Lightbox.chunk.js',
 		library: 'Lightbox',
 		libraryTarget: 'umd',
-		globalObject: '(typeof self !== "undefined" ? self : this)',
+		// globalObject: '(typeof self !== "undefined" ? self : this)',
 	},
 	externals: {
 		'react': 'react',
 		'react-dom': 'react-dom',
+		// 'react-player': 'react-player',
 	},
 	module: {
 		rules: [
 			{
 				test: /\.js$/,
 				exclude: [/node_modules/],
-				use: [{
-					loader: 'babel-loader',
-					options: { presets: ['react', 'env'] },
-				}],
+				use: [
+					{
+						loader: 'babel-loader',
+					},
+				],
 			},
 			{
 				test: /\.(jpe?g|png|gif|svg)$/i,

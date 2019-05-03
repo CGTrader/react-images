@@ -9,7 +9,7 @@ function Footer ({
 	countSeparator,
 	countTotal,
 	showCount,
-	...props,
+	...props
 }, {
 	theme,
 }) {

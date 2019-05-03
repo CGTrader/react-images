@@ -15,8 +15,14 @@ class Video extends React.Component {
 	}
 
 	loadPlayer () {
-		window.React = React;
-		loadScript('https://unpkg.com/react-player@1.11.0/dist/ReactPlayer.js').then(() => this.setState({ loaded: true }));
+		// window.React = React;
+		// loadScript('https://unpkg.com/react-player@1.11.0/dist/ReactPlayer.js').then(() => this.setState({ loaded: true }));
+		import('react-player').then(() => {
+			console.log(111);
+		});
+		require(['react-player'], () => {
+			console.log(222);
+		});
 	}
 
 	makeVideoUrl () {
