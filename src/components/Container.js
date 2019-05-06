@@ -1,44 +1,28 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from '../aphrodite-no-important';
 
-import defaults from '../theme';
-import deepMerge from '../utils/deepMerge';
+import styles from './Container.css';
 
 function Container ({ ...props }, { theme }) {
-	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
-
 	return (
 		<div
 			id="lightboxBackdrop"
-			className={`react-images react-images__modal ${css(classes.container)}`}
+			className={`react-images react-images__modal ${styles.container}`}
 			{...props}
+			style={{
+				backgroundColor: theme.container.background,
+				paddingTop: theme.container.gutter.vertical,
+				paddingBottom: theme.container.gutter.vertical,
+				paddingLeft: theme.container.gutter.horizontal,
+				paddingRight: theme.container.gutter.horizontal,
+				zIndex: theme.container.zIndex,
+			}}
 		/>
 	);
 }
 
 Container.contextTypes = {
 	theme: PropTypes.object.isRequired,
-};
-
-const defaultStyles = {
-	container: {
-		alignItems: 'center',
-		backgroundColor: defaults.container.background,
-		boxSizing: 'border-box',
-		display: 'flex',
-		height: '100%',
-		justifyContent: 'center',
-		left: 0,
-		paddingBottom: defaults.container.gutter.vertical,
-		paddingLeft: defaults.container.gutter.horizontal,
-		paddingRight: defaults.container.gutter.horizontal,
-		paddingTop: defaults.container.gutter.vertical,
-		position: 'fixed',
-		top: 0,
-		width: '100%',
-		zIndex: defaults.container.zIndex,
-	},
 };
 
 export default Container;

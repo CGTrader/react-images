@@ -1,0 +1,12 @@
+.footer {
+  box-sizing: border-box;
+  cursor: auto;
+  display: flex;
+  justify-content: space-between;
+  left: 0;
+  line-height: 1.3;
+}
+
+.footerCaption {
+  flex: 1 1 0;
+}

@@ -1,17 +1,11 @@
-const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
 	context: path.resolve(__dirname, 'examples/src'),
 	entry: {
 		app: './app.js',
-	},
-	output: {
-		path: path.resolve(__dirname, 'examples/dist'),
-		filename: '[name].js',
-		publicPath: '/',
 	},
 	devServer: {
 		contentBase: path.resolve(__dirname, 'examples/src'),
@@ -30,10 +24,30 @@ module.exports = {
 			},
 			{
 				test: /\.less$/,
-				use: ExtractTextPlugin.extract({
-					fallback: 'style-loader',
-					use: ['css-loader', 'less-loader'],
-				}),
+				use: [
+					{
+						loader: MiniCssExtractPlugin.loader,
+					},
+					{
+						loader: 'css-loader',
+					},
+					'less-loader',
+				],
+			},
+			{
+				test: /\.css$/,
+				use: [
+					{
+						loader: MiniCssExtractPlugin.loader,
+					},
+					{
+						loader: 'css-loader',
+						options: {
+							modules: true,
+							localIdentName: '[local]--[hash:base64:5]',
+						},
+					},
+				],
 			},
 			{
 				test: /\.html$/,
@@ -53,16 +67,18 @@ module.exports = {
 		},
 	},
 	plugins: [
-		new webpack.optimize.CommonsChunkPlugin({
-			name: 'common',
-			filename: 'common.js',
-			minChunk: 2,
-		}),
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
 			inject: false,
 			template: path.resolve(__dirname, 'examples/src/index.html'),
 		}),
-		new ExtractTextPlugin('example.css'),
+		new MiniCssExtractPlugin({
+			filename: 'example.css',
+		}),
 	],
+	stats: {
+		assets: false,
+		children: false,
+		context: path.resolve(__dirname),
+	},
 };

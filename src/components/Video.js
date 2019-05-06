@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import loadScript from '../utils/loadScript';
 
 class Video extends React.Component {
 	constructor () {
 		super();
 		this.state = {
-			VideoComponent: false,
+			loaded: false,
 		};
 	}
 
@@ -14,7 +15,8 @@ class Video extends React.Component {
 	}
 
 	loadPlayer () {
-		require(['react-player'], (mod) => this.setState({ VideoComponent: mod.default }));
+		window.React = React;
+		loadScript('https://unpkg.com/react-player@1.11.0/dist/ReactPlayer.js').then(() => this.setState({ loaded: true }));
 	}
 
 	makeVideoUrl () {
@@ -37,23 +39,19 @@ class Video extends React.Component {
 		const { inline } = this.props;
 		const url = this.makeVideoUrl();
 
-		const Component = this.state.VideoComponent;
-
-		const commonProps = {
-			style: {
-				position: 'absolute',
-				width: '100%',
-				height: inline ? '100%' : '80%',
-				background: '#000',
-			},
-		};
-
 		return (
-			<div {...commonProps}>
+			<div
+				style={{
+					position: 'absolute',
+					width: '100%',
+					height: inline ? '100%' : '80%',
+					background: '#000',
+				}}
+			>
 				{
-					Component
+					this.state.loaded
 					&& (
-						<Component
+						<window.ReactPlayer
 							config={{
 								youtube: {
 									playerVars: {

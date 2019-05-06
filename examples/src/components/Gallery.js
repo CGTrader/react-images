@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { css, StyleSheet } from '../../../src/aphrodite-no-important';
+
 import Lightbox from 'react-images';
 
 class Gallery extends Component {
@@ -61,17 +61,16 @@ class Gallery extends Component {
 			return (
 				<a
 					href={obj.src}
-					className={css(classes.thumbnail, classes[obj.orientation])}
 					key={i}
 					onClick={(e) => this.openLightbox(i, e)}
 				>
-					<img src={obj.thumbnail} className={css(classes.source)} />
+					<img src={obj.thumbnail} />
 				</a>
 			);
 		});
 
 		return (
-			<div className={css(classes.gallery)}>
+			<div>
 				{gallery}
 			</div>
 		);
@@ -110,58 +109,5 @@ Gallery.propTypes = {
 	showThumbnails: PropTypes.bool,
 	subheading: PropTypes.string,
 };
-
-const gutter = {
-	small: 2,
-	large: 4,
-};
-const classes = StyleSheet.create({
-	gallery: {
-		marginRight: -gutter.small,
-		overflow: 'hidden',
-
-		'@media (min-width: 500px)': {
-			marginRight: -gutter.large,
-		},
-	},
-
-	// anchor
-	thumbnail: {
-		boxSizing: 'border-box',
-		display: 'block',
-		float: 'left',
-		lineHeight: 0,
-		paddingRight: gutter.small,
-		paddingBottom: gutter.small,
-		overflow: 'hidden',
-
-		'@media (min-width: 500px)': {
-			paddingRight: gutter.large,
-			paddingBottom: gutter.large,
-		},
-	},
-
-	// orientation
-	landscape: {
-		width: '30%',
-	},
-	square: {
-		paddingBottom: 0,
-		width: '40%',
-
-		'@media (min-width: 500px)': {
-			paddingBottom: 0,
-		},
-	},
-
-	// actual <img />
-	source: {
-		border: 0,
-		display: 'block',
-		height: 'auto',
-		maxWidth: '100%',
-		width: 'auto',
-	},
-});
 
 export default Gallery;

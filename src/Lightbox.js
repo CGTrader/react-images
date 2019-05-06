@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { css, StyleSheet } from './aphrodite';
 import ScrollLock from 'react-scrolllock';
 
 import defaultTheme from './theme';
@@ -19,6 +18,8 @@ import bindFunctions from './utils/bindFunctions';
 import canUseDom from './utils/canUseDom';
 import deepMerge from './utils/deepMerge';
 
+import styles from './Lightbox.css';
+
 // consumers sometimes provide incorrect type or casing
 function normalizeSourceSet (data) {
 	const sourceSet = data.srcSet || data.srcset;
@@ -35,7 +36,6 @@ class Lightbox extends Component {
 		super(props);
 
 		this.theme = deepMerge(defaultTheme, props.theme);
-		this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
 		this.state = { imageLoaded: false };
 
 		bindFunctions.call(this, [
@@ -214,15 +214,14 @@ class Lightbox extends Component {
 		);
 	}
 	renderInline () {
-		const { imageLoaded } = this.state;
 		return (
-			<div className={`react-images react-images__inline ${css(this.classes.inline)}`}>
+			<div
+				className={`react-images react-images__inline ${styles.inline}`}
+			>
 				{this.renderImages()}
 				{this.renderFooter()}
 				{this.renderThumbnails()}
-				{imageLoaded && this.renderArrowPrev()}
-				{imageLoaded && this.renderArrowNext()}
-				<ToggleFullscreen onClick={this.handleToggleFullscreenClick} />
+				{this.props.showToggleFullscreen && <ToggleFullscreen onClick={this.handleToggleFullscreenClick} />}
 			</div>
 		);
 	}
@@ -246,11 +245,16 @@ class Lightbox extends Component {
 		return (
 			<Container
 				key="open"
-				onClick={backdropClosesModal && this.closeBackdrop}
-				onTouchEnd={backdropClosesModal && this.closeBackdrop}
+				onClick={backdropClosesModal ? this.closeBackdrop : undefined}
+				onTouchEnd={backdropClosesModal ? this.closeBackdrop : undefined}
 			>
-				<div className={css(this.classes.modalContainer)}>
-					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
+				<div
+					className={styles.modalContainer}
+				>
+					<div
+						style={{ marginBottom: offsetThumbnails, maxWidth: width }}
+						className={styles.content}
+					>
 						{imageLoaded && this.renderHeader()}
 						{this.renderImages()}
 						{this.renderSpinner()}
@@ -276,15 +280,15 @@ class Lightbox extends Component {
 
 		return (
 			<img
-				className={css(this.classes.image, imageLoaded && this.classes.imageLoaded)}
+				className={`${styles.image} ${imageLoaded ? styles.imageLoaded : ''}`}
+				style={{
+					cursor: onClickImage ? 'pointer' : 'auto',
+				}}
 				onClick={onClickImage}
 				sizes={sizes}
 				alt={image.alt}
 				src={image.src}
 				srcSet={sourceSet}
-				style={{
-					cursor: onClickImage ? 'pointer' : 'auto',
-				}}
 			/>
 		);
 	}
@@ -311,6 +315,8 @@ class Lightbox extends Component {
 			inline,
 		} = this.props;
 
+		const { imageLoaded } = this.state;
+
 		if (!images || !images.length) return null;
 
 		const item = images[currentImage];
@@ -329,13 +335,17 @@ class Lightbox extends Component {
 		}
 
 		return (
-			<figure className={css(this.classes.figure, inline && this.classes.inlineFigure)}>
+			<figure
+				className={inline ? styles.inlineFigure : styles.figure}
+			>
 				{/*
 					Re-implement when react warning "unknown props"
 					https://fb.me/react-unknown-prop is resolved
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
 				{content}
+				{inline && imageLoaded && this.renderArrowPrev()}
+				{inline && imageLoaded && this.renderArrowNext()}
 			</figure>
 		);
 	}
@@ -411,7 +421,9 @@ class Lightbox extends Component {
 		const Spinner = spinner;
 
 		return (
-			<div className={css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive)}>
+			<div
+				className={`${styles.spinner} ${!imageLoaded ? styles.spinnerActive : ''}`}
+			>
 				<Spinner
 					color={spinnerColor}
 					size={spinnerSize}
@@ -461,6 +473,7 @@ Lightbox.propTypes = {
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
 	showThumbnails: PropTypes.bool,
+	showToggleFullscreen: PropTypes.bool,
 	spinner: PropTypes.func,
 	spinnerColor: PropTypes.string,
 	spinnerSize: PropTypes.number,
@@ -472,7 +485,7 @@ Lightbox.defaultProps = {
 	closeButtonTitle: 'Close (Esc)',
 	currentImage: 0,
 	enableKeyboardInput: true,
-	imageCountSeparator: ' of ',
+	imageCountSeparator: ' / ',
 	inline: false,
 	leftArrowTitle: 'Previous (Left arrow key)',
 	onClickShowNextImage: true,
@@ -481,6 +494,7 @@ Lightbox.defaultProps = {
 	rightArrowTitle: 'Next (Right arrow key)',
 	showCloseButton: true,
 	showImageCount: true,
+	showToggleFullscreen: false,
 	spinner: DefaultSpinner,
 	spinnerColor: 'white',
 	spinnerSize: 100,
@@ -491,66 +505,5 @@ Lightbox.defaultProps = {
 Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
 };
-
-const defaultStyles = {
-	modalContainer: {
-		width: '100%',
-		height: '100%',
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'flex-end',
-	},
-	content: {
-		position: 'relative',
-		margin: 'auto',
-		width: '100%',
-		height: '100%',
-	},
-	figure: {
-		position: 'relative',
-		flex: '1 0',
-		margin: 0,
-		width: '100%',
-		height: '100%',
-		display: 'flex',
-		alignItems: 'center',
-	},
-	inlineFigure: {
-		height: 0, // flex hacks
-		background: '#fff',
-	},
-	image: {
-		display: 'block',
-		margin: 'auto',
-		maxWidth: '100%',
-		maxHeight: '100%',
-
-		// disable user select
-		WebkitTouchCallout: 'none',
-		userSelect: 'none',
-
-		// opacity animation on image load
-		opacity: 0,
-		transition: 'opacity 0.3s',
-	},
-	imageLoaded: {
-		opacity: 1,
-	},
-	spinner: {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
-
-		// opacity animation to make spinner appear with delay
-		opacity: 0,
-		transition: 'opacity 0.3s',
-		pointerEvents: 'none',
-	},
-	spinnerActive: {
-		opacity: 1,
-	},
-};
-
 
 export default Lightbox;

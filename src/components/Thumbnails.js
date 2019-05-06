@@ -1,13 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from 'src/aphrodite-no-important';
 import Thumbnail from './Thumbnail';
 
-import theme from '../theme';
+import styles from './Thumbnails.css';
 
-function Thumbnails ({ currentImage, images, onClickThumbnail }) {
+function Thumbnails ({ currentImage, images, onClickThumbnail }, { theme }) {
 	return (
-		<div className={css(classes.thumbnails)}>
+		<div
+			className={styles.thumbnails}
+			style={{
+				bottom: theme.container.gutter.vertical,
+				height: theme.thumbnail.size,
+				left: theme.container.gutter.horizontal,
+				right: theme.container.gutter.horizontal,
+			}}
+		>
 			{images.map((img, idx) => (
 				<Thumbnail
 					{...img}
@@ -26,20 +33,5 @@ Thumbnails.propTypes = {
 	images: PropTypes.array,
 	onClickThumbnail: PropTypes.func.isRequired,
 };
-
-const classes = StyleSheet.create({
-	thumbnails: {
-		bottom: theme.container.gutter.vertical,
-		color: 'white',
-		height: theme.thumbnail.size,
-		left: theme.container.gutter.horizontal,
-		overflowX: 'scroll',
-		overflowY: 'hidden',
-		position: 'absolute',
-		right: theme.container.gutter.horizontal,
-		textAlign: 'center',
-		whiteSpace: 'nowrap',
-	},
-});
 
 export default Thumbnails;

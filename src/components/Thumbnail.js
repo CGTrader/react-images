@@ -1,41 +1,28 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from '../aphrodite-no-important';
 
-import deepMerge from '../utils/deepMerge';
+import styles from './Thumbnail.css';
+
 import marmosetThumb from '../assets/marmoset.png';
 
 function Thumbnail ({ index, src, thumbnail, active, onClick, type }, { theme }) {
-	const defaultStyles = {
-		thumbnail: {
-			backgroundPosition: 'center',
-			backgroundSize: 'cover',
-			borderRadius: 2,
-			boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)',
-			cursor: 'pointer',
-			display: 'inline-block',
-			height: theme.thumbnail.size,
-			margin: theme.thumbnail.gutter,
-			overflow: 'hidden',
-			width: theme.thumbnail.size,
-		},
-		thumbnail__active: {
-			boxShadow: `inset 0 0 0 2px ${theme.thumbnail.activeBorderColor}`,
-		},
-	};
-
 	const url = type === 'marmoset' ? marmosetThumb : thumbnail ? thumbnail : src;
-	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	return (
 		<div
-			className={css(classes.thumbnail, active && classes.thumbnail__active)}
+			className={`thumbnail ${active ? 'thumbnail-active' : ''} ${styles.thumbnail}`}
+			style={{
+				backgroundImage: 'url("' + url + '")',
+				height: theme.thumbnail.size,
+				margin: theme.thumbnail.gutter,
+				width: theme.thumbnail.size,
+				boxShadow: active ? `inset 0 0 0 2px ${theme.thumbnail.activeBorderColor}` : 'inset 0 0 0 1px hsla(0, 0%, 100%, .2)',
+			}}
 			onClick={(e) => {
 				e.preventDefault();
 				e.stopPropagation();
 				onClick(index);
 			}}
-			style={{ backgroundImage: 'url("' + url + '")' }}
 		/>
 	);
 }

@@ -1,0 +1,8 @@
+.icon {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.6);
+}

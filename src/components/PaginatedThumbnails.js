@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { css, StyleSheet } from '../aphrodite-no-important';
 
 import Thumbnail from './Thumbnail';
 import Arrow from './Arrow';
+
+import styles from './PaginatedThumbnails.css';
 
 export default class PaginatedThumbnails extends Component {
 	constructor (props) {
@@ -17,22 +18,8 @@ export default class PaginatedThumbnails extends Component {
 	componentWillMount () {
 		const theme = this.context.theme;
 
-		this.classes = StyleSheet.create({
-			paginatedThumbnails: {
-				flex: '0',
-				height: theme.thumbnail.size,
-				marginTop: theme.thumbnail.gutter,
-				marginBottom: theme.thumbnail.gutter,
-				padding: `0 ${theme.thumbnail.sidePadding}px`,
-				position: 'relative',
-				textAlign: this.props.inline ? 'left' : 'center',
-				whiteSpace: 'nowrap',
-			},
-		});
-
 		this.arrowStyles = {
-			height: theme.thumbnail.size + (theme.thumbnail.gutter * 2),
-			width: 40,
+			height: theme.thumbnail.size,
 			top: 0,
 			margin: 0,
 		};
@@ -45,10 +32,6 @@ export default class PaginatedThumbnails extends Component {
 	updateWidth () {
 		this.setState({ width: this.container.offsetWidth });
 	}
-
-	// ==============================
-	// RENDERERS
-	// ==============================
 
 	renderArrowPrev () {
 		if (this.props.currentImage === 0) return null;
@@ -103,7 +86,17 @@ export default class PaginatedThumbnails extends Component {
 		const thumbnails = images.slice(offset, offset + perPage);
 
 		return (
-			<div ref={node => (this.container = node)} className={css(this.classes.paginatedThumbnails)}>
+			<div
+				ref={node => (this.container = node)}
+				className={styles.paginatedThumbnails}
+				style={{
+					height: theme.thumbnail.size,
+					marginTop: theme.thumbnail.gutter,
+					marginBottom: theme.thumbnail.gutter,
+					padding: `0 ${theme.thumbnail.sidePadding}px`,
+					textAlign: this.props.inline ? 'left' : 'center',
+				}}
+			>
 				{this.renderArrowPrev()}
 				{thumbnails.map((img, idx) => (
 					<Thumbnail key={offset + idx}
