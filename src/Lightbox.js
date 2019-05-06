@@ -116,7 +116,7 @@ class Lightbox extends Component {
 		return this.preloadImageData(this.props.images[idx], onload);
 	}
 	preloadImageData (data, onload) {
-		if (!data || data.type === 'marmoset') return;
+		if (!data || !data.src || data.type === 'marmoset') return;
 		const img = new Image();
 		const sourceSet = normalizeSourceSet(data);
 
@@ -313,6 +313,7 @@ class Lightbox extends Component {
 			currentImage,
 			images,
 			inline,
+			customContent,
 		} = this.props;
 
 		const { imageLoaded } = this.state;
@@ -322,12 +323,16 @@ class Lightbox extends Component {
 		const item = images[currentImage];
 
 		let content;
-		switch (item.type) {
-			case 'youtube':
-			case 'vimeo':
+		const customComponentContent = customContent && item.custom && customContent(item);
+		switch (true) {
+			case !!customComponentContent:
+				content = customComponentContent;
+				break;
+			case item.type === 'youtube':
+			case item.type === 'vimeo':
 				content = this.renderVideo(item);
 				break;
-			case 'marmoset':
+			case item.type === 'marmoset':
 				content = this.renderMarmoset(item);
 				break;
 			default:
@@ -354,9 +359,12 @@ class Lightbox extends Component {
 			images,
 			currentImage,
 			onClickThumbnail,
+			onClickNext,
+			onClickPrev,
 			showThumbnails,
 			thumbnailOffset,
 			inline,
+			customThumbnailContent,
 		} = this.props;
 
 		if (!showThumbnails) return;
@@ -367,9 +375,10 @@ class Lightbox extends Component {
 				images={images}
 				offset={thumbnailOffset}
 				onClickThumbnail={onClickThumbnail}
-				onClickNext={this.props.onClickNext}
-				onClickPrev={this.props.onClickPrev}
+				onClickNext={onClickNext}
+				onClickPrev={onClickPrev}
 				inline={inline}
+				customThumbnailContent={customThumbnailContent}
 			/>
 		);
 	}

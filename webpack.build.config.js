@@ -54,4 +54,9 @@ module.exports = {
 	optimization: {
 		minimize: true,
 	},
+	stats: {
+		assets: false,
+		children: false,
+		context: path.resolve(__dirname),
+	},
 };
