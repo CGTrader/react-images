@@ -13,6 +13,7 @@ import DefaultSpinner from './components/Spinner';
 import Video from './components/Video';
 import Marmoset from './components/Marmoset';
 import ToggleFullscreen from './components/ToggleFullscreen';
+import WebRotatable from './components/WebRotatable';
 
 import bindFunctions from './utils/bindFunctions';
 import canUseDom from './utils/canUseDom';
@@ -308,6 +309,14 @@ class Lightbox extends Component {
 			/>
 		);
 	}
+	renderRotator (item) {
+		return (
+			<WebRotatable
+				{...item}
+				inline={this.props.inline}
+			/>
+		);
+	}
 	renderImages () {
 		const {
 			currentImage,
@@ -335,6 +344,9 @@ class Lightbox extends Component {
 			case item.type === 'marmoset':
 				content = this.renderMarmoset(item);
 				break;
+			case item.type === 'rotator':
+				content = this.renderRotator(item);
+				break;
 			default:
 				content = this.renderImage(item);
 		}
@@ -351,6 +363,7 @@ class Lightbox extends Component {
 				{content}
 				{inline && imageLoaded && this.renderArrowPrev()}
 				{inline && imageLoaded && this.renderArrowNext()}
+				{item.appendComponent && item.appendComponent(item)}
 			</figure>
 		);
 	}

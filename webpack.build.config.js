@@ -2,7 +2,10 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-	entry: './src/Lightbox.js',
+	entry: [
+		'./lib/imagerotator-3.6.2.146.js',
+		'./src/Lightbox.js',
+	],
 	output: {
 		path: path.resolve(__dirname, './lib'),
 		publicPath: '/',

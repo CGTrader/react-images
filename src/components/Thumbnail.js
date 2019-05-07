@@ -4,11 +4,25 @@ import React from 'react';
 import styles from './Thumbnail.css';
 
 import marmosetThumb from '../assets/marmoset.png';
+import rotatorThumb from '../assets/360_thumb.jpg';
 
 function Thumbnail ({ index, src, thumbnail, active, onClick, type, custom, customThumbnailContent }, { theme }) {
 	const customContent = custom && customThumbnailContent && customThumbnailContent({ type });
 
-	const url = type === 'marmoset' ? marmosetThumb : thumbnail ? thumbnail : src;
+	let url;
+	switch (true) {
+		case type === 'marmoset':
+			url = marmosetThumb;
+			break;
+		case type === 'rotator':
+			url = rotatorThumb;
+			break;
+		case !!thumbnail:
+			url = thumbnail;
+			break;
+		default:
+			url = src;
+	}
 
 	return (
 		<div
