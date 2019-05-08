@@ -9,6 +9,7 @@ class WebRotatable extends React.Component {
 	}
 
 	componentDidMount () {
+		window.INITWR360();
 		const rotator = window.WR360.ImageRotator.Create(this.id);
 		rotator.licenseCode = this.props.external_id;
 		rotator.settings.disableRelativeAssets = true;
