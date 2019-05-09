@@ -8,23 +8,36 @@ class Marmoset extends React.Component {
 		this.state = {
 			loaded: false,
 		};
+		this.initViewer = this.initViewer.bind(this);
+		this.destroyViewer = this.destroyViewer.bind(this);
 	}
 
 	componentDidMount () {
-		loadScript('https://viewer.marmoset.co/main/marmoset.js').then(() => {
-			this.viewer = new window.marmoset.WebViewer(this.container.offsetWidth, this.container.offsetHeight, this.props.file_url);
-			this.container.appendChild(this.viewer.domRoot);
-			this.viewer.domRoot.getElementsByTagName('canvas')[0].style.left = 0;
-		});
+		loadScript('https://viewer.marmoset.co/main/marmoset.js').then(this.initViewer);
 	}
 
 	componentDidUpdate (props) {
 		if (this.viewer && props.inline !== this.props.inline) {
 			this.viewer.resize(this.container.offsetWidth, this.container.offsetHeight);
 		}
+		if (this.props.file_url !== props.file_url) {
+			this.initViewer();
+		}
 	}
 
 	componentWillUnmount () {
+		this.destroyViewer();
+		delete this.viewer;
+	}
+
+	initViewer () {
+		this.destroyViewer();
+		this.viewer = new window.marmoset.WebViewer(this.container.offsetWidth, this.container.offsetHeight, this.props.file_url);
+		this.container.appendChild(this.viewer.domRoot);
+		this.viewer.domRoot.getElementsByTagName('canvas')[0].style.left = 0;
+	}
+
+	destroyViewer () {
 		if (this.viewer) {
 			this.viewer.unload();
 		}
@@ -33,6 +46,7 @@ class Marmoset extends React.Component {
 	render () {
 		return (
 			<div
+				key={this.props.file_url}
 				ref={(c) => (this.container = c)}
 				style={{ background: '#000', width: '100%', height: this.props.inline ? '100%' : '80%' }}
 			/>
