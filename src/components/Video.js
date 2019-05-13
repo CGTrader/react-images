@@ -43,8 +43,9 @@ class Video extends React.Component {
 			<div
 				style={{
 					position: 'absolute',
-					width: '100%',
-					height: inline ? '100%' : '80%',
+					left: inline ? '0' : '10%',
+					width: inline ? '100%' : '80%',
+					height: inline ? '100%' : '60%',
 					background: '#000',
 				}}
 			>

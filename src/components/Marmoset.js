@@ -48,7 +48,13 @@ class Marmoset extends React.Component {
 			<div
 				key={this.props.file_url}
 				ref={(c) => (this.container = c)}
-				style={{ background: '#000', width: '100%', height: this.props.inline ? '100%' : '80%' }}
+				style={{
+					position: 'absolute',
+					background: '#000',
+					left: this.props.inline ? '0' : '10%',
+					width: this.props.inline ? '100%' : '80%',
+					height: this.props.inline ? '100%' : '60%',
+				}}
 			/>
 		);
 	}
