@@ -361,8 +361,8 @@ class Lightbox extends Component {
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
 				{content}
-				{inline && imageLoaded && this.renderArrowPrev()}
-				{inline && imageLoaded && this.renderArrowNext()}
+				{inline && this.renderArrowPrev()}
+				{inline && this.renderArrowNext()}
 				{item.appendComponent && item.appendComponent(item)}
 			</figure>
 		);
