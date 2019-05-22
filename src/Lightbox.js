@@ -256,14 +256,14 @@ class Lightbox extends Component {
 						style={{ marginBottom: offsetThumbnails, maxWidth: width }}
 						className={styles.content}
 					>
-						{imageLoaded && this.renderHeader()}
+						{this.renderHeader()}
 						{this.renderImages()}
 						{this.renderSpinner()}
 						{imageLoaded && this.renderFooter()}
 					</div>
 					{this.renderThumbnails()}
-					{imageLoaded && this.renderArrowPrev()}
-					{imageLoaded && this.renderArrowNext()}
+					{this.renderArrowPrev()}
+					{this.renderArrowNext()}
 					{this.props.preventScroll && <ScrollLock />}
 				</div>
 			</Container>
