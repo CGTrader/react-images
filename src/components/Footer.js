@@ -19,8 +19,7 @@ function Footer ({
 		<div
 			className="footerCount"
 			style={{
-				color: theme.footer.count.color,
-				fontSize: theme.footer.count.fontSize,
+				color: theme.footer.count.color
 			}}
 		>
 			{countCurrent}

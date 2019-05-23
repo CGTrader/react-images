@@ -21,6 +21,7 @@ theme.container = {
 theme.header = {
 	height: 40,
 };
+
 theme.close = {
 	fill: 'white',
 };
@@ -28,8 +29,7 @@ theme.close = {
 theme.footer = {
 	color: 'white',
 	count: {
-		color: 'rgba(255, 255, 255, 0.75)',
-		fontSize: '0.85em',
+		color: 'rgba(255, 255, 255)'
 	},
 	height: 40,
 	gutter: {

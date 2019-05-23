@@ -10,7 +10,7 @@ function Thumbnails ({ currentImage, images, onClickThumbnail }, { theme }) {
 			className={styles.thumbnails}
 			style={{
 				bottom: theme.container.gutter.vertical,
-				height: theme.thumbnail.size,
+				height: theme.thumbnail.height,
 				left: theme.container.gutter.horizontal,
 				right: theme.container.gutter.horizontal,
 			}}

@@ -29,7 +29,7 @@ function Thumbnail ({ index, src, thumbnail, active, onClick, type, custom, cust
 			className={`thumbnail ${active ? 'thumbnail-active' : ''} ${styles.thumbnail}`}
 			style={{
 				backgroundImage: customContent ? '' : 'url("' + url + '")',
-				height: theme.thumbnail.size,
+				height: theme.thumbnail.height,
 				margin: theme.thumbnail.gutter,
 				width: theme.thumbnail.size,
 				boxShadow: active ? `inset 0 0 0 2px ${theme.thumbnail.activeBorderColor}` : 'inset 0 0 0 1px hsla(0, 0%, 100%, .2)',

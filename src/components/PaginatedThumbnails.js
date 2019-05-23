@@ -19,7 +19,7 @@ export default class PaginatedThumbnails extends Component {
 		const theme = this.context.theme;
 
 		this.arrowStyles = {
-			height: theme.thumbnail.size,
+			height: theme.thumbnail.height,
 			top: 0,
 			margin: 0,
 		};
@@ -90,7 +90,7 @@ export default class PaginatedThumbnails extends Component {
 				ref={node => (this.container = node)}
 				className={styles.paginatedThumbnails}
 				style={{
-					height: theme.thumbnail.size,
+					height: theme.thumbnail.height,
 					marginTop: theme.thumbnail.gutter,
 					marginBottom: theme.thumbnail.gutter,
 					padding: `0 ${theme.thumbnail.sidePadding}px`,
