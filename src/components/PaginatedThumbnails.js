@@ -43,7 +43,6 @@ export default class PaginatedThumbnails extends Component {
 				style={this.arrowStyles}
 				title="Previous (Left arrow key)"
 				type="button"
-				isInline={this.props.inline}
 			/>
 		);
 	}
@@ -59,7 +58,6 @@ export default class PaginatedThumbnails extends Component {
 				style={this.arrowStyles}
 				title="Next (Right arrow key)"
 				type="button"
-				isInline={this.props.inline}
 			/>
 		);
 	}

@@ -18,15 +18,6 @@
   margin: auto;
 }
 
-.arrow--small--3pBqm.arrow--inline--OyAeF {
-  opacity: 1;
-}
-
-.arrow--inline--OyAeF svg {
-  fill: $main-headings-color;
-  filter: none;
-}
-
 .arrow--medium--16aJ3 {
   width: 30px;
 }
@@ -36,8 +27,6 @@
     width: 48px;
   }
 }
-
-
 
 @media (min-width: 500px) {
   .arrow--small--3pBqm {

@@ -29,7 +29,7 @@ theme.close = {
 theme.footer = {
 	color: 'white',
 	count: {
-		color: 'rgba(255, 255, 255)'
+		color: 'rgba(255, 255, 255)',
 	},
 	height: 40,
 	gutter: {
