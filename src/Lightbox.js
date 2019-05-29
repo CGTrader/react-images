@@ -132,9 +132,8 @@ class Lightbox extends Component {
 	}
 	gotoNext (event) {
 		const { currentImage, images } = this.props;
-		const { imageLoaded } = this.state;
 
-		if (!imageLoaded || currentImage === (images.length - 1)) return;
+		if (currentImage === (images.length - 1)) return;
 
 		if (event) {
 			event.preventDefault();
@@ -145,9 +144,8 @@ class Lightbox extends Component {
 	}
 	gotoPrev (event) {
 		const { currentImage } = this.props;
-		const { imageLoaded } = this.state;
 
-		if (!imageLoaded || currentImage === 0) return;
+		if (currentImage === 0) return;
 
 		if (event) {
 			event.preventDefault();
@@ -324,8 +322,6 @@ class Lightbox extends Component {
 			inline,
 			customContent,
 		} = this.props;
-
-		const { imageLoaded } = this.state;
 
 		if (!images || !images.length) return null;
 
