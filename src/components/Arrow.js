@@ -19,7 +19,7 @@ function Arrow ({
 	return (
 		<button
 			type="button"
-			className={`arrow ${styles.arrow} ${styles[`arrow__size__${size}`]}`}
+			className={`arrow arrow--${size} ${styles.arrow} ${styles[`arrow--${size}`]}`}
 			onClick={onClick}
 			onTouchEnd={onClick}
 			style={{

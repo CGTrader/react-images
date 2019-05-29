@@ -20,8 +20,6 @@ export default class PaginatedThumbnails extends Component {
 
 		this.arrowStyles = {
 			height: theme.thumbnail.height,
-			top: 0,
-			margin: 0,
 		};
 	}
 

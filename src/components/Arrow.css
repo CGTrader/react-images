@@ -10,23 +10,26 @@
   user-select: none;
 }
 
-.arrow__size__medium {
+.arrow--small {
+  width: 20px;
+  padding: 5px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.arrow--medium {
   width: 30px;
 }
 
 @media (min-width: 768px) {
-  .arrow__size__medium {
+  .arrow--medium {
     width: 48px;
   }
 }
 
-.arrow__size__small {
-  width: 20px;
-  padding: 5px;
-}
-
 @media (min-width: 500px) {
-  .arrow__size__small {
+  .arrow--small {
     width: 40px;
   }
 }
