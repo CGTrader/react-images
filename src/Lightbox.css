@@ -46,6 +46,12 @@
   background: #fff;
 }
 
+@media (max-width: 768px) {
+  .inlineFigure {
+    max-height: 100%;
+  }
+}
+
 .image {
   display: block;
   margin: auto;

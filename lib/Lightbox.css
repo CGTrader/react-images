@@ -208,6 +208,12 @@
   background: #fff;
 }
 
+@media (max-width: 768px) {
+  .inlineFigure--FRwaJ {
+    max-height: 100%;
+  }
+}
+
 .image--3XEDb {
   display: block;
   margin: auto;

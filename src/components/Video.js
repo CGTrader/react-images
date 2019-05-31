@@ -43,10 +43,12 @@ class Video extends React.Component {
 			<div
 				style={{
 					position: 'absolute',
-					left: inline ? '0' : '10%',
-					width: inline ? '100%' : '80%',
-					height: inline ? '100%' : '60%',
+					width: inline ? '100%' : 'calc((-225px + 100vh) * 1.7777775)',
+					height: inline ? '100%' : '100vh',
+					maxHeight: inline ? 'none' : 'calc(-225px + 100vh)',
 					background: '#000',
+					left: inline ? '0' : '50%',
+					transform: inline ? 'none' : 'translateX(-50%)',
 				}}
 			>
 				{

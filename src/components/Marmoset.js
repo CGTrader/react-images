@@ -44,6 +44,8 @@ class Marmoset extends React.Component {
 	}
 
 	render () {
+		const inline = this.props.inline;
+
 		return (
 			<div
 				key={this.props.file_url}
@@ -51,9 +53,11 @@ class Marmoset extends React.Component {
 				style={{
 					position: 'absolute',
 					background: '#000',
-					left: this.props.inline ? '0' : '10%',
-					width: this.props.inline ? '100%' : '80%',
-					height: this.props.inline ? '100%' : '60%',
+					width: inline ? '100%' : 'calc((-225px + 100vh) * 1.7777775)',
+					height: inline ? '100%' : '100vh',
+					maxHeight: inline ? 'none' : 'calc(-225px + 100vh)',
+					left: inline ? '0' : '50%',
+					transform: inline ? 'none' : 'translateX(-50%)',
 				}}
 			/>
 		);
