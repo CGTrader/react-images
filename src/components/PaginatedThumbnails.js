@@ -27,6 +27,18 @@ export default class PaginatedThumbnails extends Component {
 		this.updateWidth();
 	}
 
+	updateState () {
+		const {
+			theme,
+		} = this.context;
+
+		this.setState({
+			sidePadding: theme.thumbnail.sidePadding,
+			size: theme.thumbnail.size,
+			gutter: theme.thumbnail.gutter,
+		});
+	}
+
 	updateWidth () {
 		this.setState({ width: this.container.offsetWidth });
 	}
@@ -75,6 +87,8 @@ export default class PaginatedThumbnails extends Component {
 		const {
 			theme,
 		} = this.context;
+
+
 
 		const padding = theme.thumbnail.sidePadding * 2;
 		const calculatedWidth = width - padding;
