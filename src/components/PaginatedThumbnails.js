@@ -25,6 +25,7 @@ export default class PaginatedThumbnails extends Component {
 
 	componentDidMount () {
 		this.updateWidth();
+		this.updateState();
 	}
 
 	updateState () {
