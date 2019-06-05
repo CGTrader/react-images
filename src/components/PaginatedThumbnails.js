@@ -25,19 +25,6 @@ export default class PaginatedThumbnails extends Component {
 
 	componentDidMount () {
 		this.updateWidth();
-		this.updateState();
-	}
-
-	updateState () {
-		const {
-			theme,
-		} = this.context;
-
-		this.setState({
-			sidePadding: theme.thumbnail.sidePadding,
-			size: theme.thumbnail.size,
-			gutter: theme.thumbnail.gutter,
-		});
 	}
 
 	updateWidth () {
@@ -75,7 +62,6 @@ export default class PaginatedThumbnails extends Component {
 		);
 	}
 	render () {
-		console.log('> render ');
 		const {
 			images,
 			currentImage,
@@ -90,7 +76,7 @@ export default class PaginatedThumbnails extends Component {
 			theme,
 		} = this.context;
 
-		const thumbWidth = 121;
+		const thumbWidth = theme.thumbnail.size + theme.thumbnail.gutter * 2;
 		const padding = theme.thumbnail.sidePadding * 2;
 		const calculatedWidth = width - padding;
 		const perPage = Math.floor(calculatedWidth / thumbWidth);
