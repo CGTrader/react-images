@@ -94,9 +94,6 @@ export default class PaginatedThumbnails extends Component {
 		const padding = theme.thumbnail.sidePadding * 2;
 		const calculatedWidth = width - padding;
 		const perPage = Math.floor(calculatedWidth / thumbWidth);
-
-		// const page = Math.floor(((currentImage + 1) * (thumbWidth)) / calculatedWidth);]
-
 		const page = Math.floor((currentImage) / perPage);
 		const offset = page * perPage;
 		const thumbnails = images.slice(offset, offset + perPage);

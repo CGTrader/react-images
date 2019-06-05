@@ -23,10 +23,11 @@ function Arrow ({
 			onClick={onClick}
 			onTouchEnd={onClick}
 			style={{
-				top: `calc(50% - ${defaults.thumbnail.size + defaults.thumbnail.gutter * 2}px)`,
+				top: 'calc(50%)',
 				right: direction === 'right' ? defaults.container.gutter.horizontal : 'auto',
 				left: direction === 'left' ? defaults.container.gutter.horizontal : 'auto',
 				height: size === 'medium' ? defaults.arrow.height : defaults.thumbnail.size,
+				transform: 'translateY(-50%)',
 				...props.style,
 			}}
 		>
