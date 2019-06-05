@@ -13,6 +13,15 @@ export default class PaginatedThumbnails extends Component {
 		this.state = {
 			width: 500,
 		};
+
+		this.container = null;
+
+		this.setContainerRef = this.setContainerRef.bind(this);
+		this.updateWidth = this.updateWidth.bind(this);
+	}
+
+	setContainerRef (e) {
+		this.container = e;
 	}
 
 	componentWillMount () {
@@ -25,10 +34,18 @@ export default class PaginatedThumbnails extends Component {
 
 	componentDidMount () {
 		this.updateWidth();
+
+		window.addEventListener("resize", this.updateWidth);
+	}
+
+	componentWillUnmount () {
+		window.removeEventListener("resize", this.updateWidth);
 	}
 
 	updateWidth () {
-		this.setState({ width: this.container.offsetWidth });
+		if (this.container) {
+			this.setState({ width: this.container.offsetWidth });
+		}
 	}
 
 	renderArrowPrev () {
@@ -86,7 +103,7 @@ export default class PaginatedThumbnails extends Component {
 
 		return (
 			<div
-				ref={node => (this.container = node)}
+				ref={(el) => {this.setContainerRef(el)}}
 				className={styles.paginatedThumbnails}
 				style={{
 					height: theme.thumbnail.height,
