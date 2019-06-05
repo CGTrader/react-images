@@ -75,6 +75,7 @@ export default class PaginatedThumbnails extends Component {
 		);
 	}
 	render () {
+		console.log('> render ');
 		const {
 			images,
 			currentImage,
@@ -89,14 +90,20 @@ export default class PaginatedThumbnails extends Component {
 			theme,
 		} = this.context;
 
-
-
+		const thumbWidth = 121;
+		console.log('width: ', theme.thumbnail.size, theme.thumbnail.gutter);
 		const padding = theme.thumbnail.sidePadding * 2;
+		console.log('padding: ', padding);
 		const calculatedWidth = width - padding;
-		const perPage = Math.floor(calculatedWidth / (theme.thumbnail.size + theme.thumbnail.gutter));
-		const page = Math.floor(((currentImage + 1) * theme.thumbnail.size) / calculatedWidth);
+		console.log('container width', calculatedWidth);
+		const perPage = Math.floor(calculatedWidth / thumbWidth);
+		console.log('perPage ', perPage);
+		const page = Math.floor(((currentImage + 1) * (thumbWidth)) / calculatedWidth);
+		console.log('page ', page);
 		const offset = page * perPage;
+		console.log('offset ', offset);
 		const thumbnails = images.slice(offset, offset + perPage);
+		console.log('thumbnails ', thumbnails);
 
 		return (
 			<div
