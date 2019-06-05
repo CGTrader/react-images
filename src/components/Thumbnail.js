@@ -30,7 +30,7 @@ function Thumbnail ({ index, src, thumbnail, active, onClick, type, custom, cust
 			style={{
 				backgroundImage: customContent ? '' : 'url("' + url + '")',
 				height: theme.thumbnail.height,
-				margin: `0 ${theme.thumbnail.gutter}`,
+				margin: `0 ${theme.thumbnail.gutter}px`,
 				width: theme.thumbnail.size,
 				boxShadow: active ? `inset 0 0 0 2px ${theme.thumbnail.activeBorderColor}` : 'inset 0 0 0 1px hsla(0, 0%, 100%, .2)',
 			}}
