@@ -3,22 +3,19 @@
 ## Local development
 
 Clone this repository, run `yarn` to install all dependencies.
+
 Run `yarn link` to register this package system-wide ready to be linked.
+
 Run `yarn link "react-images"` in the CGT repository root directory.
-Create a feature branch.
-Run `yarn run watch` in this package's directory. Changes to the code will trigger the build package build which will build the files which will trigger CGT webpack rebuild.
-When creating a pull-request — commit **ONLY** files in the `/src` and `/examples` directories. Files in the `/lib` and `/dist` are only supposed to be built ant commited after a pull request is accepted and merged to master.
+
+Run `yarn run watch`.
+
+Create a feature branch. Code changes will automatically be picked up by the CGT webpack.
 
 
 ## Updating package code
 
-To build the package code run:
-```
-yarn run build
-```
-This will build the package in the `/dist` and `/lib` directories.
-
-Commit and push.
+Merge feature branch into master, run `yarn run build` and push master to remote.
 
 
 ## Quick start

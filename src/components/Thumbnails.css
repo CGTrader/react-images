@@ -1,0 +1,8 @@
+.thumbnails {
+  color: white;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  position: absolute;
+  text-align: center;
+  white-space: nowrap;
+}

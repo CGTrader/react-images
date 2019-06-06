@@ -1,24 +1,47 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
 
-import defaults from '../theme';
-import deepMerge from '../utils/deepMerge';
+import styles from './Thumbnail.css';
 
-function Thumbnail ({ index, src, thumbnail, active, onClick }, { theme }) {
-	const url = thumbnail ? thumbnail : src;
-	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
+import marmosetThumb from '../assets/marmoset.png';
+import rotatorThumb from '../assets/360_thumb.jpg';
+
+function Thumbnail ({ index, src, thumbnail, active, onClick, type, custom, customThumbnailContent }, { theme }) {
+	const customContent = custom && customThumbnailContent && customThumbnailContent({ type });
+
+	let url;
+	switch (true) {
+		case type === 'marmoset':
+			url = marmosetThumb;
+			break;
+		case type === 'rotator':
+			url = rotatorThumb;
+			break;
+		case !!thumbnail:
+			url = thumbnail;
+			break;
+		default:
+			url = src;
+	}
 
 	return (
 		<div
-			className={css(classes.thumbnail, active && classes.thumbnail__active)}
+			className={`thumbnail ${active ? 'thumbnail-active' : ''} ${styles.thumbnail}`}
+			style={{
+				backgroundImage: customContent ? '' : 'url("' + url + '")',
+				height: theme.thumbnail.height,
+				margin: `0 ${theme.thumbnail.gutter}px`,
+				width: theme.thumbnail.size,
+				boxShadow: active ? `inset 0 0 0 2px ${theme.thumbnail.activeBorderColor}` : 'inset 0 0 0 1px hsla(0, 0%, 100%, .2)',
+			}}
 			onClick={(e) => {
 				e.preventDefault();
 				e.stopPropagation();
 				onClick(index);
 			}}
-			style={{ backgroundImage: 'url("' + url + '")' }}
-		/>
+		>
+			{!!customContent && customContent}
+		</div>
 	);
 }
 
@@ -32,24 +55,6 @@ Thumbnail.propTypes = {
 
 Thumbnail.contextTypes = {
 	theme: PropTypes.object.isRequired,
-};
-
-const defaultStyles = {
-	thumbnail: {
-		backgroundPosition: 'center',
-		backgroundSize: 'cover',
-		borderRadius: 2,
-		boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)',
-		cursor: 'pointer',
-		display: 'inline-block',
-		height: defaults.thumbnail.size,
-		margin: defaults.thumbnail.gutter,
-		overflow: 'hidden',
-		width: defaults.thumbnail.size,
-	},
-	thumbnail__active: {
-		boxShadow: `inset 0 0 0 2px ${defaults.thumbnail.activeBorderColor}`,
-	},
 };
 
 export default Thumbnail;

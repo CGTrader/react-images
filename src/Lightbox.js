@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { css, StyleSheet } from 'aphrodite';
 import ScrollLock from 'react-scrolllock';
 
 import defaultTheme from './theme';
@@ -11,10 +10,16 @@ import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 import DefaultSpinner from './components/Spinner';
+import Video from './components/Video';
+import Marmoset from './components/Marmoset';
+import ToggleFullscreen from './components/ToggleFullscreen';
+import WebRotatable from './components/WebRotatable';
 
 import bindFunctions from './utils/bindFunctions';
 import canUseDom from './utils/canUseDom';
 import deepMerge from './utils/deepMerge';
+
+import styles from './Lightbox.css';
 
 // consumers sometimes provide incorrect type or casing
 function normalizeSourceSet (data) {
@@ -32,7 +37,6 @@ class Lightbox extends Component {
 		super(props);
 
 		this.theme = deepMerge(defaultTheme, props.theme);
-		this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
 		this.state = { imageLoaded: false };
 
 		bindFunctions.call(this, [
@@ -41,6 +45,7 @@ class Lightbox extends Component {
 			'closeBackdrop',
 			'handleKeyboardInput',
 			'handleImageLoaded',
+			'handleToggleFullscreenClick',
 		]);
 	}
 	getChildContext () {
@@ -112,7 +117,7 @@ class Lightbox extends Component {
 		return this.preloadImageData(this.props.images[idx], onload);
 	}
 	preloadImageData (data, onload) {
-		if (!data) return;
+		if (!data || !data.src || data.type === 'marmoset') return;
 		const img = new Image();
 		const sourceSet = normalizeSourceSet(data);
 
@@ -127,9 +132,8 @@ class Lightbox extends Component {
 	}
 	gotoNext (event) {
 		const { currentImage, images } = this.props;
-		const { imageLoaded } = this.state;
 
-		if (!imageLoaded || currentImage === (images.length - 1)) return;
+		if (currentImage === (images.length - 1)) return;
 
 		if (event) {
 			event.preventDefault();
@@ -140,9 +144,8 @@ class Lightbox extends Component {
 	}
 	gotoPrev (event) {
 		const { currentImage } = this.props;
-		const { imageLoaded } = this.state;
 
-		if (!imageLoaded || currentImage === 0) return;
+		if (currentImage === 0) return;
 
 		if (event) {
 			event.preventDefault();
@@ -175,6 +178,9 @@ class Lightbox extends Component {
 	handleImageLoaded () {
 		this.setState({ imageLoaded: true });
 	}
+	handleToggleFullscreenClick () {
+		this.props.onToggleFullscreenClick();
+	}
 
 	// ==============================
 	// RENDERERS
@@ -206,6 +212,18 @@ class Lightbox extends Component {
 			/>
 		);
 	}
+	renderInline () {
+		return (
+			<div
+				className={`react-images react-images__inline ${styles.inline}`}
+			>
+				{this.renderImages()}
+				{this.renderFooter()}
+				{this.renderThumbnails()}
+				{this.props.showToggleFullscreen && <ToggleFullscreen onClick={this.handleToggleFullscreenClick} />}
+			</div>
+		);
+	}
 	renderDialog () {
 		const {
 			backdropClosesModal,
@@ -226,68 +244,137 @@ class Lightbox extends Component {
 		return (
 			<Container
 				key="open"
-				onClick={backdropClosesModal && this.closeBackdrop}
-				onTouchEnd={backdropClosesModal && this.closeBackdrop}
+				onClick={backdropClosesModal ? this.closeBackdrop : undefined}
+				onTouchEnd={backdropClosesModal ? this.closeBackdrop : undefined}
 			>
-				<div>
-					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-						{imageLoaded && this.renderHeader()}
+				<div
+					className={styles.modalContainer}
+				>
+					<div
+						style={{ marginBottom: offsetThumbnails, maxWidth: width }}
+						className={styles.content}
+					>
+						{this.renderHeader()}
 						{this.renderImages()}
 						{this.renderSpinner()}
 						{imageLoaded && this.renderFooter()}
 					</div>
-					{imageLoaded && this.renderThumbnails()}
-					{imageLoaded && this.renderArrowPrev()}
-					{imageLoaded && this.renderArrowNext()}
+					{this.renderThumbnails()}
+					{this.renderArrowPrev()}
+					{this.renderArrowNext()}
 					{this.props.preventScroll && <ScrollLock />}
 				</div>
 			</Container>
+		);
+	}
+	renderImage (image) {
+		const {
+			onClickImage,
+		} = this.props;
+
+		const { imageLoaded } = this.state;
+
+		const sourceSet = normalizeSourceSet(image);
+		const sizes = sourceSet ? '100vw' : null;
+
+		return (
+			<img
+				className={`${styles.image} ${imageLoaded ? styles.imageLoaded : ''}`}
+				style={{
+					cursor: onClickImage ? 'pointer' : 'auto',
+				}}
+				onClick={onClickImage}
+				sizes={sizes}
+				alt={image.alt}
+				src={image.src}
+				srcSet={sourceSet}
+			/>
+		);
+	}
+	renderVideo (item) {
+		return (
+			<Video
+				{...item}
+				inline={this.props.inline}
+			/>
+		);
+	}
+	renderMarmoset (item) {
+		return (
+			<Marmoset
+				{...item}
+				inline={this.props.inline}
+			/>
+		);
+	}
+	renderRotator (item) {
+		return (
+			<WebRotatable
+				{...item}
+				inline={this.props.inline}
+			/>
 		);
 	}
 	renderImages () {
 		const {
 			currentImage,
 			images,
-			onClickImage,
-			showThumbnails,
+			inline,
+			customContent,
 		} = this.props;
-
-		const { imageLoaded } = this.state;
 
 		if (!images || !images.length) return null;
 
-		const image = images[currentImage];
-		const sourceSet = normalizeSourceSet(image);
-		const sizes = sourceSet ? '100vw' : null;
+		const item = images[currentImage];
 
-		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
-		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
-			+ (this.theme.container.gutter.vertical)}px`;
+		let content;
+		const customComponentContent = customContent && item.custom && customContent(item);
+		switch (true) {
+			case !!customComponentContent:
+				content = customComponentContent;
+				break;
+			case item.type === 'youtube':
+			case item.type === 'vimeo':
+				content = this.renderVideo(item);
+				break;
+			case item.type === 'marmoset':
+				content = this.renderMarmoset(item);
+				break;
+			case item.type === 'rotator':
+				content = this.renderRotator(item);
+				break;
+			default:
+				content = this.renderImage(item);
+		}
 
 		return (
-			<figure className={css(this.classes.figure)}>
+			<figure
+				className={inline ? styles.inlineFigure : styles.figure}
+			>
 				{/*
 					Re-implement when react warning "unknown props"
 					https://fb.me/react-unknown-prop is resolved
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
-				<img
-					className={css(this.classes.image, imageLoaded && this.classes.imageLoaded)}
-					onClick={onClickImage}
-					sizes={sizes}
-					alt={image.alt}
-					src={image.src}
-					srcSet={sourceSet}
-					style={{
-						cursor: onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
-					}}
-				/>
+				{content}
+				{inline && this.renderArrowPrev()}
+				{inline && this.renderArrowNext()}
+				{item.appendComponent && item.appendComponent(item)}
 			</figure>
 		);
 	}
 	renderThumbnails () {
-		const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
+		const {
+			images,
+			currentImage,
+			onClickThumbnail,
+			onClickNext,
+			onClickPrev,
+			showThumbnails,
+			thumbnailOffset,
+			inline,
+			customThumbnailContent,
+		} = this.props;
 
 		if (!showThumbnails) return;
 
@@ -297,6 +384,10 @@ class Lightbox extends Component {
 				images={images}
 				offset={thumbnailOffset}
 				onClickThumbnail={onClickThumbnail}
+				onClickNext={onClickNext}
+				onClickPrev={onClickPrev}
+				inline={inline}
+				customThumbnailContent={customThumbnailContent}
 			/>
 		);
 	}
@@ -348,7 +439,9 @@ class Lightbox extends Component {
 		const Spinner = spinner;
 
 		return (
-			<div className={css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive)}>
+			<div
+				className={`${styles.spinner} ${!imageLoaded ? styles.spinnerActive : ''}`}
+			>
 				<Spinner
 					color={spinnerColor}
 					size={spinnerSize}
@@ -357,6 +450,9 @@ class Lightbox extends Component {
 		);
 	}
 	render () {
+		if (this.props.inline) {
+			return this.renderInline();
+		}
 		return (
 			<Portal>
 				{this.renderDialog()}
@@ -367,6 +463,7 @@ class Lightbox extends Component {
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
+	className: PropTypes.string,
 	closeButtonTitle: PropTypes.string,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
@@ -378,8 +475,10 @@ Lightbox.propTypes = {
 			srcSet: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
 			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 			thumbnail: PropTypes.string,
+			type: PropTypes.string,
 		})
 	).isRequired,
+	inline: PropTypes.bool,
 	isOpen: PropTypes.bool,
 	leftArrowTitle: PropTypes.string,
 	onClickImage: PropTypes.func,
@@ -392,6 +491,7 @@ Lightbox.propTypes = {
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
 	showThumbnails: PropTypes.bool,
+	showToggleFullscreen: PropTypes.bool,
 	spinner: PropTypes.func,
 	spinnerColor: PropTypes.string,
 	spinnerSize: PropTypes.number,
@@ -403,7 +503,8 @@ Lightbox.defaultProps = {
 	closeButtonTitle: 'Close (Esc)',
 	currentImage: 0,
 	enableKeyboardInput: true,
-	imageCountSeparator: ' of ',
+	imageCountSeparator: ' / ',
+	inline: false,
 	leftArrowTitle: 'Previous (Left arrow key)',
 	onClickShowNextImage: true,
 	preloadNextImage: true,
@@ -411,6 +512,7 @@ Lightbox.defaultProps = {
 	rightArrowTitle: 'Next (Right arrow key)',
 	showCloseButton: true,
 	showImageCount: true,
+	showToggleFullscreen: false,
 	spinner: DefaultSpinner,
 	spinnerColor: 'white',
 	spinnerSize: 100,
@@ -421,46 +523,5 @@ Lightbox.defaultProps = {
 Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
 };
-
-const defaultStyles = {
-	content: {
-		position: 'relative',
-	},
-	figure: {
-		margin: 0, // remove browser default
-	},
-	image: {
-		display: 'block', // removes browser default gutter
-		height: 'auto',
-		margin: '0 auto', // maintain center on very short screens OR very narrow image
-		maxWidth: '100%',
-
-		// disable user select
-		WebkitTouchCallout: 'none',
-		userSelect: 'none',
-
-		// opacity animation on image load
-		opacity: 0,
-		transition: 'opacity 0.3s',
-	},
-	imageLoaded: {
-		opacity: 1,
-	},
-	spinner: {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
-
-		// opacity animation to make spinner appear with delay
-		opacity: 0,
-		transition: 'opacity 0.3s',
-		pointerEvents: 'none',
-	},
-	spinnerActive: {
-		opacity: 1,
-	},
-};
-
 
 export default Lightbox;

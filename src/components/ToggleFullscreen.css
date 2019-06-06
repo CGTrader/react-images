@@ -1,0 +1,11 @@
+.icon {
+  cursor: pointer;
+  font-size: 14px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 16px;
+}
